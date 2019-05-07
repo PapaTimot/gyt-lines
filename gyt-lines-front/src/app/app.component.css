@@ -16,6 +16,12 @@ body, input[type="text"], button {
   color: #888;
   font-family: Cambria, Georgia;
 }
+
+img {
+  margin-right: 10em;
+  margin-left: 10em;
+}
+
 /* everywhere else */
 * {
   font-family: Arial, Helvetica, sans-serif;
