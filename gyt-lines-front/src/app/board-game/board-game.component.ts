@@ -12,6 +12,8 @@ export class BoardGameComponent implements OnInit {
   ngOnInit() {
   }
 
+  size = Array.from(Array(8), (x, index) => index + 1);
+
   gameState = 'en cours ...'
 
 }
