@@ -1,15 +1,15 @@
 <p>
   Etat de la partie : {{gameState}}
 </p>
-<img width="300" alt="Angular Logo" src="assets/img/board-game.jpg">
 
-<div class="board col-xs-8">
-  <div class="row" *ngFor="let col of size">
-    <div class="col-div" *ngFor="let row of size" (click)="alert(row)" >
-        {{row}}{{col}}
-    </div>
-  </div>
-</div>
+<table>
+  <tbody>
+    <tr class="row" *ngFor="let row of size">
+      <td class="square" *ngFor="let col of size"><div class="pawn"></div></td>
+      <!-- à mettre dans la div pawn : *ngIf="hasPawn(row, col)" [ngStyle]="getColor(row, col)" -->
+    </tr>
+  </tbody>
+</table>
 
 <!-- 
 
