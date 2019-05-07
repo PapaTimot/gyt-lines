@@ -5,11 +5,6 @@ const BARRE 		= 1;//	/
 const HORIZONTAL 	= 2;//	-
 const BANDE 		= 3;//	\
 
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
 const Pawn = function (x, y, isWhite){
 	
 
@@ -21,10 +16,9 @@ const Pawn = function (x, y, isWhite){
 
 	this.move = function(newPlace)
     {
-        pawns.forEach(function(p){
+        pawns.forEach(function(p,i){
             if(p.isSamePlace(newPlace))
             {
-            	const i = pawns.indexOf(p);
             	pawns.splice(i, 1);
             }
         });
@@ -53,31 +47,32 @@ const Pawn = function (x, y, isWhite){
 
 	this.getMoveSize = function()
     {
-        const out = [1,1,1,1];
+        var out = [1,1,1,1];
         pawns.forEach(function(p){
-            if(this == p) return;
- 
-            if(this.y == p.y)
+            if(this == p) {
+                return;
+            }
+            if(this.x == p.x)
             {
                 out[VERTICAL]++;
-                lineContent[VERTICAL].push(p);      // sauvegarde des Pawns à la volé pour éviter une ré-itération
+                this.lineContent[VERTICAL].push(p);      // sauvegarde des Pawns à la volé pour éviter une ré-itération
             }
             else if(this.x-this.y == p.x-p.y)
             {
                 out[BARRE]++;
-                lineContent[BARRE].push(p);
+                this.lineContent[BARRE].push(p);
             }        
-            else if(this.x == p.x)
+            else if(this.y == p.y)
             {
                 out[HORIZONTAL]++
-                lineContent[HORIZONTAL].push(p);
+                this.lineContent[HORIZONTAL].push(p);
             }   
             else if(this.x+this.y == p.x+p.y)
             {
                 out[BANDE]++;
-                lineContent[BANDE].push(p);  
+                this.lineContent[BANDE].push(p);  
             } 
-        });
+        },this);
 
         return out;
     }
@@ -89,7 +84,7 @@ const Pawn = function (x, y, isWhite){
         
         line.forEach(function(p){
             // if there is an ennemy pawn on the path --> trash
-            if(p.isWhite != isWhite && isBeetwen(this, move)) return
+            if(p.isWhite != isWhite && p.isBetween(this, move)) return
             
             // if there is an other of our pawns at this place --> trash
             if(p.isWhite == isWhite && p.isSamePlace(this)) return
@@ -106,7 +101,7 @@ const Pawn = function (x, y, isWhite){
     *
     *  Normalement l'appel de cette fonction ce fait sur les contenuLigne qui garanti les assertions précédentes
     */
-    this.isBeetwen = function(position, move)
+    this.isBetween = function(position, move)
     {
         const horizontalBetween = (position.x < this.x && this.x < move.x) || (position.x > this.x && this.x > move.x);
         const verticalBetween = (position.y < this.y && this.y < move.y) || (position.y > this.y && this.y > move.y);
@@ -119,18 +114,67 @@ const Pawn = function (x, y, isWhite){
 	}
 }
 
-
-for (var i = 1; i < 7; i++) {
-	pawns.push(new Pawn(i,0,this.isWhite));
-	pawns.push(new Pawn(i,7,this.isWhite));
-	pawns.push(new Pawn(0,i,this.isWhite));
-	pawns.push(new Pawn(7,i,this.isWhite));
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
 
+function initGame(){
+    for (var i = 1; i < 7; i++) {
+        pawns.push(new Pawn(i,0,true));
+        pawns.push(new Pawn(i,7,true));
+        pawns.push(new Pawn(0,i,false));
+        pawns.push(new Pawn(7,i,false));
+    }
+}
+
+function connected(pawn, cluster){
+    var out = false;
+    cluster.forEach(function(p){
+        this = this || (Math.abs(pawn.x-p.x)<=1 && Math.abs(pawn.y-p.y)<=1)
+    },out);
+    return out;
+}
+
+function checkVictory()
+{
+    var out = 0;
+    
+    var whiteClusters = [];
+    var blackClusters = [];
+    pawns.forEach(function(p,i){
+        if(p.isWhite){
+            var lastCluster = [];
+            lastCluster.push(p);
+            whiteClusters.forEach(function(cluster,index){
+                if(connected(p, cluster)){
+                    lastCluster = lastCluster.concat(cluster);
+                    whiteClusters.slice(index,1);
+                }
+            });
+            whiteClusters.push(lastCluster);
+        } else {
+            var lastCluster = [];
+            lastCluster.push(p);
+            blackClusters.forEach(function(cluster,index){
+                if(connected(p, cluster)){
+                    lastCluster = lastCluster.concat(cluster);
+                    blackClusters.slice(index,1);
+                }
+            });
+            blackClusters.push(lastCluster);
+        }
+    });
+    
+    out += whiteClusters.length == 1?1:0;
+    out += blackClusters.length == 1?2:0;
+}
+
+
+/*
 for (var i = 0; i < 10; i++) {
 	const isBlack = i%2 == 0;
 	var int = getRandomInt(pawns.length)
 	while(pawns[int].isWhite == isBlack) int = getRandomInt(pawns.length);
 	const moveChoice = pawns[int].possibleMoves();
 	pawns[int].move(moveChoice[getRandomInt(moveChoice.length)]);
-}
+}*/
