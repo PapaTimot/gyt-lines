@@ -1,3 +1,4 @@
 export class MenuChoice {
-    name : string;
+    name  : string;
+    route : string;
 }

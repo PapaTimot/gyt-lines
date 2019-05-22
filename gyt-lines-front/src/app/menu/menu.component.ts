@@ -11,11 +11,11 @@ import { MenuChoice } from './menuChoice';
 export class MenuComponent implements OnInit {
 
   choices : MenuChoice[] = [
-    {name : "JOUER"       },
-    {name : "OPTIONS"     },
-    {name : "STATISTIQUES"},
-    {name : "INSTRUCTIONS"},
-    {name : "CREDITS"     }
+    {name : "JOUER", route : "game"       },
+    {name : "OPTIONS", route : "game"     },
+    {name : "STATISTIQUES", route : "game"},
+    {name : "INSTRUCTIONS", route : "game"},
+    {name : "CREDITS", route : "game"     }
   ]
 
   menu: Menu = {

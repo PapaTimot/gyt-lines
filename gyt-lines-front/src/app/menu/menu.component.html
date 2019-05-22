@@ -9,9 +9,8 @@
 <div class="menu" >
   <h3>{{menu.name}}</h3>
   <div *ngFor="let choice of menu.choices" (click)="onSelect(choice)">
-      <button class="btn" routerLink="/game"> {{choice.name}} </button>
+      <button class="btn" routerLink="/{{choice.route}}"> {{choice.name}} </button>
   </div>
-  <p>Sélection : {{menu.selectedChoice.name}}</p>
 </div>
 
 
