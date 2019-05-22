@@ -130,9 +130,11 @@ function initGame(){
 function connected(pawn, cluster){
     var out = false;
     cluster.forEach(function(p){
-        this = this || (Math.abs(pawn.x-p.x)<=1 && Math.abs(pawn.y-p.y)<=1)
-    },out);
-    return out;
+        if(Math.abs(pawn.x-p.x)<=1 && Math.abs(pawn.y-p.y)<=1){
+            return true
+        }
+    });
+    return false;
 }
 
 function checkVictory()
@@ -169,6 +171,30 @@ function checkVictory()
     out += blackClusters.length == 1?2:0;
 }
 
+function printBoard(){
+    var board = []
+    for(var i = 0; i<8; i++){
+        board.push([0,0,0,0,0,0,0,0])
+    }
+    pawns.forEach(function(pawn){
+        board[pawn.x][pawn.y] = pawn.isWhite?1:2
+    });
+    for(var i = 0; i<8; i++){
+        var line = i+". "
+        for(var j = 0; j<8; j++){
+            if (board[i][j] == 0) {
+                line += " "
+            }
+            if (board[i][j] == 1) {
+                line += "O"   
+            }
+            if (board[i][j] == 2) {
+                line += "X"
+            }
+        }
+        console.log(line)
+    }
+}
 
 /*
 for (var i = 0; i < 10; i++) {
