@@ -10,16 +10,27 @@ import { MenuChoice } from './menuChoice';
 
 export class MenuComponent implements OnInit {
 
+  choices : MenuChoice[] = [
+    {name : "JOUER"       },
+    {name : "OPTIONS"     },
+    {name : "STATISTIQUES"},
+    {name : "INSTRUCTIONS"},
+    {name : "CREDITS"     }
+  ]
+
   menu: Menu = {
-    name     : 'Menu principal',
-    userName : '', 
-    choices  : []
+    name           : 'Menu principal',
+    userName       : ' joueur 1'      , 
+    choices        : this.choices,
+    selectedChoice : undefined
   };
 
   constructor() { }
 
   ngOnInit() {
-    if (this.menu.userName == '')
-      this.menu.userName = 'joueur 1'
+  }
+
+  onSelect(choice: MenuChoice): void {
+    this.menu.selectedChoice = choice;
   }
 }

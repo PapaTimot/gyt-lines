@@ -4,4 +4,14 @@
     </label>
 </div>
 
-<h2>{{menu.name}} de {{menu.userName}}</h2>
+<h2>Bienvenue {{menu.userName}} !</h2>
+
+<div class="menu" >
+  <h3>{{menu.name}}</h3>
+  <div *ngFor="let choice of menu.choices" (click)="onSelect(choice)">
+      <button class="btn" routerLink="/game"> {{choice.name}} </button>
+  </div>
+  <p>Sélection : {{menu.selectedChoice.name}}</p>
+</div>
+
+
