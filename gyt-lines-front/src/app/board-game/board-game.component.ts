@@ -9,12 +9,19 @@ import { GameService } from '../game.service';
 
 export class BoardGameComponent implements OnInit {
 
-  size = Array.from(Array(8), (x, index) => index + 1);
+  game : GameService;
+  size : number [] = Array.from(Array(8), (x, index) => index + 1);
 
-  constructor(private gameService: GameService) { }
+  constructor(gameService: GameService) { 
+    this.game = gameService;
+  }
 
-  ngOnInit() {
+  endTurn() : void {
+    this.game.checkVictory();
+  }
 
+  ngOnInit() : void {
+    this.game.initGame();
   }
 
   // hasPawn(row: Number, col: Number){

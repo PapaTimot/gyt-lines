@@ -19,7 +19,7 @@ export class Pawn {
         this.lineContent	= [[],[],[],[]];
     }
   
-    move(newPlace) {
+    move(newPlace) : void {
         this.pawns.forEach( (p,i) => {
             if(p.isSamePlace(newPlace)){
                 this.pawns.splice(i, 1);
@@ -30,8 +30,8 @@ export class Pawn {
         this.pawns.splice(i, 1);
     }
   
-    possibleMoves() {
-        let out = [];
+    possibleMoves() : Pawn[] {
+    let out : Pawn[] = [];
         
         const moveSize = this.getMoveSize();
         this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, this.pawns), this.lineContent[this.VERTICAL]  , out);
@@ -46,7 +46,7 @@ export class Pawn {
         return out;
     }
   
-    getMoveSize() {
+    getMoveSize() : number[] {
         let out = [1,1,1,1];
         this.pawns.forEach( (p) => {
             if(this == p) {
@@ -77,7 +77,7 @@ export class Pawn {
         return out;
     }
   
-    validateMoves(move, line, possibilities) {
+    validateMoves(move, line, possibilities) : void {
         // if out of the board --> trash
         if(move.x > 7 || move.y > 7 || move.x < 0 || move.y < 0) return
         
@@ -99,22 +99,22 @@ export class Pawn {
       *
       *  Normalement l'appel de cette fonction ce fait sur les contenuLigne qui garanti les assertions précédentes
       */
-    isBetween(position, move) {
+    isBetween(position, move) : boolean {
         const horizontalBetween = (position.x < this.x && this.x < move.x) || (position.x > this.x && this.x > move.x);
         const verticalBetween = (position.y < this.y && this.y < move.y) || (position.y > this.y && this.y > move.y);
         return verticalBetween || horizontalBetween;
     }
   
-    isSamePlace(otherPawn) {
+    isSamePlace(otherPawn) : boolean {
       return this.x == otherPawn.x && this.y == otherPawn.y;
     }
 
-    isConnected(cluster){
+    isConnected(cluster) : boolean{
         cluster.forEach( (p) => {
             if(Math.abs(this.x-p.x)<=1 && Math.abs(this.y-p.y)<=1) {
             return true
             }
         });
         return false;
-        }
+    }
 }
