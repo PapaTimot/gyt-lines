@@ -10,21 +10,20 @@ import { Pawn } from '../pawn';
 
 export class BoardGameComponent implements OnInit {
 
+  gridSize : number = 5;
+
   game: GameService;
-  size: number [] = Array.from(Array(8), (x, index) => index);
+  size: number [] = Array.from(Array(this.gridSize), (x, index) => index);
   possibleMoves : Pawn[] = [];
-  oldPlace: Pawn
+  oldPlace: Pawn;
+  whiteTurn : boolean = false;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
   }
 
-  endTurn(): void {
-    this.game.checkVictory();
-  }
-
   ngOnInit(): void {
-    this.game.initGame();
+    this.game.initGame(this.gridSize);
   }
 
   hasPawn(row: number, col: number) {
@@ -50,8 +49,10 @@ export class BoardGameComponent implements OnInit {
   onClickPawn(row: number, col: number) {
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
-        this.oldPlace = pawn
-        this.possibleMoves = pawn.possibleMoves()
+        if (this.whiteTurn === pawn.isWhite){
+          this.oldPlace = pawn
+          this.possibleMoves = pawn.possibleMoves()
+        }
       }
     });
   }
@@ -69,8 +70,12 @@ export class BoardGameComponent implements OnInit {
   move(row: number, col: number){
     this.possibleMoves.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
-        this.possibleMoves = [];
-        this.oldPlace.move(pawn);
+        if (this.whiteTurn === pawn.isWhite){
+          this.possibleMoves = [];
+          this.oldPlace.move(pawn);
+          this.whiteTurn = !this.whiteTurn;
+          console.log(this.game.checkVictory());          
+        }
       }
     });
   }
