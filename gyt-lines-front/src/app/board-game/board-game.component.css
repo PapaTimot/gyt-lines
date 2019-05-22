@@ -16,9 +16,16 @@ table {
 }
 
 .pawn {
-    width: 4.7vw;
-    height: 4.7vw;
+    width: 4.5vw;
+    height: 4.5vw;
     background: white;
     border-radius: 50%;
     margin: auto;
+    position: absolute;
+    z-index: 1;
+}
+
+.possiblePawn {
+    z-index: 2;
+    background: rgba(40, 163, 71, 0.747);
 }

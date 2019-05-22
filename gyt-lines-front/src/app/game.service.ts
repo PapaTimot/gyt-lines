@@ -52,5 +52,7 @@ export class GameService {
     out += whiteClusters.length == 1?1:0;
     out += blackClusters.length == 1?2:0;
   }
+
+  
   
 }

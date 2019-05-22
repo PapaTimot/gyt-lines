@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
+import { Pawn } from '../pawn';
 
 @Component({
   selector: 'app-board-game',
@@ -11,63 +12,68 @@ export class BoardGameComponent implements OnInit {
 
   game: GameService;
   size: number [] = Array.from(Array(8), (x, index) => index);
-
-
-  plate = [
-    [0, 1, 1, 1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [0, 1, 1, 1, 1, 1, 1, 0],
-  ]
+  possibleMoves : Pawn[] = [];
+  oldPlace: Pawn
 
   constructor(gameService: GameService) { 
     this.game = gameService;
   }
 
-  endTurn() : void {
+  endTurn(): void {
     this.game.checkVictory();
   }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     this.game.initGame();
   }
 
-  getPawnId(row: number, col: number) {
-    return row+col;
-  }
-
   hasPawn(row: number, col: number) {
-    return this.plate[row][col];
+    let result : boolean = false
+    this.game.pawns.forEach( (pawn) => {      
+      if(pawn.x === col && pawn.y === row) {
+        result = true;
+      }
+    });
+    return result;
   }
 
-  getColor(row: number, col: number) {
-      return (col === 0 || col === (this.size.length - 1)) ? {background: 'white'} : {background: 'black'};
+  getColor(row: number, col: number): {background: string} {
+    let result : {background: string};
+    this.game.pawns.forEach( (pawn) => {      
+      if(pawn.x === col && pawn.y === row) {
+        result = pawn.isWhite ? {background: 'white'} : {background: 'black'};
+      }
+    });
+    return result;
   }
 
-  onClickPawn(event) {
-    console.log(event.target.id);
+  onClickPawn(row: number, col: number) {
+    this.game.pawns.forEach( (pawn) => {      
+      if(pawn.x === col && pawn.y === row) {
+        this.oldPlace = pawn
+        this.possibleMoves = pawn.possibleMoves()
+      }
+    });
   }
 
-  // hasPawn(row: Number, col: Number){
-  //   for(let pawn of pawns){
-  //     if(pawn.x == col && pawn.y = row) {
-  //       return true;
-  //     }
-  //     return false;
-  //   }
-  // }
+  isPossibleMoves(row: number, col: number){
+    let result : boolean = false;
+    this.possibleMoves.forEach( (pawn) => {      
+      if(pawn.x === col && pawn.y === row) {
+        result = true;
+      }
+    });
+    return result;
+  }
 
-  // getColor(row: Number, col: Number){
-  //   for(let pawn of pawns){
-  //     if(pawn.x == col && pawn.y = row){
-  //       return pawn.isWhite ? {'background': 'white'} : {'background': 'black'};
-  //     }
-  //   }
-  // }
+  move(row: number, col: number){
+    this.possibleMoves.forEach( (pawn) => {      
+      if(pawn.x === col && pawn.y === row) {
+        this.possibleMoves = [];
+        this.oldPlace.move(pawn);
+      }
+    });
+  }
 
   gameState = 'en cours ...'
 
