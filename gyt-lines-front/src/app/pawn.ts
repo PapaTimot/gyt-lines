@@ -10,13 +10,15 @@ export class Pawn {
     isWhite : boolean;
     pawns   : Pawn[] ;
     lineContent : Pawn[][];
+    gridSize : number;
 
-    constructor(x, y, isWhite, pawns){
+    constructor(x, y, isWhite, pawns, gridSize){
         this.x = x;
         this.y = y;
         this.isWhite = isWhite;
         this.pawns   = pawns  ;
         this.lineContent	= [[],[],[],[]];
+        this.gridSize = gridSize;
     }
   
     move(newPlace) : void {
@@ -34,14 +36,14 @@ export class Pawn {
     let out : Pawn[] = [];
         
         const moveSize = this.getMoveSize();
-        this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, this.pawns), this.lineContent[this.VERTICAL]  , out);
-        this.validateMoves(new Pawn(this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite, this.pawns), this.lineContent[this.VERTICAL]  , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite, this.pawns), this.lineContent[this.BARRE]     , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite, this.pawns), this.lineContent[this.BARRE]     , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns), this.lineContent[this.HORIZONTAL], out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns), this.lineContent[this.HORIZONTAL], out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite, this.pawns), this.lineContent[this.BANDE]     , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite, this.pawns), this.lineContent[this.BANDE]     , out);
+        this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, this.pawns, this.gridSize), this.lineContent[this.VERTICAL]  , out);
+        this.validateMoves(new Pawn(this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite, this.pawns, this.gridSize), this.lineContent[this.VERTICAL]  , out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.BARRE]     , out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.BARRE]     , out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.HORIZONTAL], out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.HORIZONTAL], out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.BANDE]     , out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite, this.pawns, this.gridSize), this.lineContent[this.BANDE]     , out);
         
         return out;
     }
@@ -79,17 +81,24 @@ export class Pawn {
   
     validateMoves(move, line, possibilities) : void {
         // if out of the board --> trash
-        if(move.x > 7 || move.y > 7 || move.x < 0 || move.y < 0) return
-        
+        if(move.x > this.gridSize || move.y > this.gridSize || move.x < 0 || move.y < 0) return
+
+        let valid: boolean = true;
         line.forEach( (p) => {
             // if there is an ennemy pawn on the path --> trash
-            if(p.isWhite != this.isWhite && p.isBetween(this, move)) return
+            if(p.isWhite !== this.isWhite && p.isBetween(this, move)) valid = false;
             
             // if there is an other of our pawns at this place --> trash
-            if(p.isWhite == this.isWhite && p.isSamePlace(this)) return
+            if(p.isWhite === this.isWhite && p.isSamePlace(this)) valid = false;
         });
+        // line.forEach(element => {
+        //     console.log(`isWhite : ${element.isWhite} - x : ${element.x} - y : ${element.y}`);
+        // });
+        // console.log("-");
+        
+        
         // else add it to possibilities
-        possibilities.push(move);
+        if(valid) possibilities.push(move);
     }
   
     /* ATTENTION

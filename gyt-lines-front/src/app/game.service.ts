@@ -8,19 +8,20 @@ export class GameService {
 
 	constructor() {}
 
+  pawns : Pawn[] = [];
+  
+  initGame(gridSize : number) : void {
+    for (let i = 1; i < gridSize-1; i++) {
+      this.pawns.push( new Pawn(i,0,true ,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(i,gridSize-1,true ,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(0,i,false,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(gridSize-1,i,false,this.pawns, gridSize) );
+    }
+  }
+  
 	THREAT_WEIGHT         :number = 100;
 	CENTRALISATION_WEIGHT :number = 1;
 
-	pawns : Pawn[] = [];
-
-	initGame() : void {
-		for (let i = 1; i < 7; i++) {
-			this.pawns.push( new Pawn(i,0,true ,this.pawns) );
-			this.pawns.push( new Pawn(i,7,true ,this.pawns) );
-			this.pawns.push( new Pawn(0,i,false,this.pawns) );
-			this.pawns.push( new Pawn(7,i,false,this.pawns) );
-		}
-	}
 
 	checkVictory() : number {
 		let out = 0;
@@ -30,7 +31,6 @@ export class GameService {
 
 		out += whiteClusters.length == 1?1:0;
     out += blackClusters.length == 1?2:0;
-    
     return out;
   }
   
