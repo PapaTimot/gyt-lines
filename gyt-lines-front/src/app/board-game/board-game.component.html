@@ -1,4 +1,40 @@
 <p>
   Etat de la partie : {{gameState}}
 </p>
-<img width="300" alt="Angular Logo" src="assets/img/board-game.jpg">
+
+<table>
+  <tbody>
+    <tr class="row" *ngFor="let row of size">
+      <td class="square" *ngFor="let col of size"><div class="pawn"></div></td>
+      <!-- à mettre dans la div pawn : *ngIf="hasPawn(row, col)" [ngStyle]="getColor(row, col)" -->
+    </tr>
+  </tbody>
+</table>
+
+<!-- 
+
+  <body ng-app="myApp" ng-keydown="rm($event)" key-event>
+  <main class="fluid-container center" chess-game>
+    <div class="row center">
+      <div class="col-xs-12 banner">
+        <img class="banner-img" src="https://icons.iconarchive.com/icons/blackvariant/shadow135-system/1024/Chess-icon.png"></img>
+      <h1 class="banner-txt">Angular-chess</h1>
+      </div>
+    </div>
+    <div class="row center">
+      <div class="col-xs-12 play-area">
+
+        <div class="board col-xs-8">
+          <div class="row" ng-repeat="col in columns | orderBy:'-'">
+            <div class="col-xs-1 chess-sq {{row}}{{col}}" ng-repeat="row in rows" ng-click="getInitial(col, row, $index, $parent.$index)" ng-class="[{ 'initial': $index === initialIdx[0] && $parent.$index === initialIdx[1],'destination': $index === destinationIdx[0] && $parent.$index === destinationIdx[1]}, piece(row, col)]">
+              {{row}}{{col}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</body>
+
+ -->

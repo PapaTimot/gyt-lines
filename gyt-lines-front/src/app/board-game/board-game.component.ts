@@ -5,12 +5,33 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './board-game.component.html',
   styleUrls: ['./board-game.component.css']
 })
+
 export class BoardGameComponent implements OnInit {
+
+  size = Array.from(Array(8), (x, index) => index + 1);
 
   constructor() { }
 
   ngOnInit() {
+
   }
+
+  // hasPawn(row: Number, col: Number){
+  //   for(let pawn of pawns){
+  //     if(pawn.x == col && pawn.y = row){
+  //       return true;
+  //     }
+  //     return false;
+  //   }
+  // }
+
+  // getColor(row: Number, col: Number){
+  //   for(let pawn of pawns){
+  //     if(pawn.x == col && pawn.y = row){
+  //       return pawn.isWhite ? {'background': 'white'} : {'background': 'black'};
+  //     }
+  //   }
+  // }
 
   gameState = 'en cours ...'
 

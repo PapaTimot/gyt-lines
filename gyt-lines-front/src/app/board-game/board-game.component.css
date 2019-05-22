@@ -4,3 +4,19 @@
     height: auto;
 } */
 
+table {
+    margin: auto;
+}
+
+.square {
+    width: 5vw;
+    height: 5vw;
+    background: rgba(163, 40, 40, 0.61);
+}
+
+.pawn {
+    width: 5vw;
+    height: 5vw;
+    background: white;
+    border-radius: 50%;
+}
