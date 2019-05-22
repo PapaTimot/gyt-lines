@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-board-game',
@@ -10,7 +11,7 @@ export class BoardGameComponent implements OnInit {
 
   size = Array.from(Array(8), (x, index) => index + 1);
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
 

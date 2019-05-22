@@ -11,17 +11,17 @@ import { MenuChoice } from './menuChoice';
 export class MenuComponent implements OnInit {
 
   choices : MenuChoice[] = [
-    {name : "JOUER", route : "game"       },
-    {name : "OPTIONS", route : "game"     },
-    {name : "STATISTIQUES", route : "game"},
-    {name : "INSTRUCTIONS", route : "game"},
-    {name : "CREDITS", route : "game"     }
+    {name : "JOUER"       , route : "game"        },
+    {name : "OPTIONS"     , route : "options"     },
+    {name : "STATISTIQUES", route : "stats"       },
+    {name : "INSTRUCTIONS", route : "instructions"},
+    {name : "CREDITS"     , route : "credits"     }
   ]
 
   menu: Menu = {
     name           : 'Menu principal',
-    userName       : ' joueur 1'      , 
-    choices        : this.choices,
+    userName       : ' joueur 1'     , 
+    choices        : this.choices    ,
     selectedChoice : undefined
   };
 
