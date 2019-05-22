@@ -5,7 +5,9 @@
 <table>
   <tbody>
     <tr class="row" *ngFor="let row of size">
-      <td class="square" *ngFor="let col of size"><div class="pawn"></div></td>
+      <td class="square" *ngFor="let col of size">
+        <div id="getPawnId(row, col)" class="pawn" *ngIf="hasPawn(row, col)" [ngStyle]="getColor(row, col)" (click)="onClickPawn($event)"></div>
+      </td>
       <!-- à mettre dans la div pawn : *ngIf="hasPawn(row, col)" [ngStyle]="getColor(row, col)" -->
     </tr>
   </tbody>

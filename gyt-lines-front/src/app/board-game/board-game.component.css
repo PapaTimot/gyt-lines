@@ -12,11 +12,13 @@ table {
     width: 5vw;
     height: 5vw;
     background: rgba(163, 40, 40, 0.61);
+    border: 1px solid black;
 }
 
 .pawn {
-    width: 5vw;
-    height: 5vw;
+    width: 4.7vw;
+    height: 4.7vw;
     background: white;
     border-radius: 50%;
+    margin: auto;
 }
