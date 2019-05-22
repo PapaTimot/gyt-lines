@@ -22,36 +22,39 @@ export class GameService {
 		}
 	}
 
-	getClusters(color) : Pawn[][] {
-		const clusters = []
-		this.pawns.forEach( (p) => {
-			if(p.isWhite == color){
+	checkVictory() : number {
+		let out = 0;
+
+		let whiteClusters = this.getClusters(true);
+		let blackClusters = this.getClusters(false);
+
+		out += whiteClusters.length == 1?1:0;
+    out += blackClusters.length == 1?2:0;
+    
+    return out;
+  }
+  
+  getClusters(color) : Pawn[][] {
+    const clusters = []
+    for (let index = this.pawns.length -1; index >= 0; index--) {
+      const p = this.pawns[index];
+      if(p.isWhite == color){
 				let lastCluster = [];
-				lastCluster.push(p);
-				clusters.forEach( (cluster,index) => {
-					if(p.isConnected(cluster)){
+        lastCluster.push(p);
+        for (let i = clusters.length-1; i >= 0; i--) {
+          const cluster = clusters[i];
+          if(p.isConnected(cluster)){
 						lastCluster = lastCluster.concat(cluster);
-						clusters.slice(index,1);
+						clusters.slice(i,1);
 					}
-				});
-				clusters.push(lastCluster);
+        }
 			}
-		}
+    }
 		return clusters;
 	}
 
-	checkVictory() : void {
-		let out = 0;
-
-		let whiteClusters = getClusters(true);
-		let blackClusters = getClusters(false);
-
-		out += whiteClusters.length == 1?1:0;
-		out += blackClusters.length == 1?2:0;
-	}
-
 	getThreats(isWhite) : Pawn[]{
-		let clusters = getClusters(isWhite)
+		let clusters = this.getClusters(isWhite)
 		const threat = []
 		if(clusters.length != 0) return []
 		if (clusters[0].length > 1 && clusters[1].length > 1) return []
@@ -62,17 +65,17 @@ export class GameService {
 		} else {
 			pawn = clusters[0][0]
 		}
-		const oldPawns = pawns
-		const possibleMoves = pawn.possibleMoves()
+		const oldPawns = this.pawns;
+		const possibleMoves = pawn.possibleMoves();
 		for (let i = possibleMoves.length - 1; i >= 0; i--) {
-			pawn.move(possibleMoves[i])
-			let isWinPos = getClusters(isWhite)
+			pawn.move(possibleMoves[i]);
+			let isWinPos = this.getClusters(isWhite);
 			if(isWinPos.length == 1){
-				threat.push(possibleMoves[i])
+				threat.push(possibleMoves[i]);
 			}
-			pawns = oldPawns
+			this.pawns = oldPawns;
 		}
-		return threat
+		return threat;
 	}
 
 	getCenterOfMass(isWhite) : Pawn{
@@ -80,35 +83,35 @@ export class GameService {
 		let xs = 0;
 		let ys = 0;
 		let nb = 0;
-		pawns.forEach(function(p,i){
+		this.pawns.forEach(function(p,i){
 			if(p.isWhite == isWhite){
 				nb++;
 				xs+=p.x;
 				ys+=p.y;
 			}
 		});
-		return new Pawn(Math.round(xs/nb),Math.round(ys/nb),isWhite)
+		return new Pawn(Math.round(xs/nb),Math.round(ys/nb),isWhite,this.pawns)
 	}
 
 	reward(pawns,mycolor) : number{
 	    let reward = 0
-	    let clusters = getClusters(mycolor)
-	    if(clusters.lenght == 1){
+	    let clusters = this.getClusters(mycolor)
+	    if(clusters.length == 1){
 	        reward += 10000000000
 	    }
-	    let clusters = getClusters(!mycolor)
-	    if(clusters.lenght == 1){
+	    clusters = this.getClusters(!mycolor)
+	    if(clusters.length == 1){
 	        reward -= 10000000000
 	    }
 
-	    let threat = getThreats(mycolor)
-	    reward += threat.lenght * THREAT_WEIGHT
+	    let threat = this.getThreats(mycolor)
+	    reward += threat.length * this.THREAT_WEIGHT
 
-	    threat = getThreats(!mycolor)
-	    reward -= threat.lenght * THREAT_WEIGHT
+	    threat = this.getThreats(!mycolor)
+	    reward -= threat.length * this.THREAT_WEIGHT
 	    
-	    const my_center = getCenterOfMass(mycolor);
-	    const other_center = getCenterOfMass(!mycolor);
+	    const my_center = this.getCenterOfMass(mycolor);
+	    const other_center = this.getCenterOfMass(!mycolor);
 	    let my_dist = 0;
 	    let other_dist = 0;
 	    let my_nbPawns = 0;
@@ -121,14 +124,14 @@ export class GameService {
 	            my_dist += dir_dx*dir_dx+dir_dy*dir_dy
 	            my_nbPawns++;
 	        } else {
-	            const dir_dy = other_dist.y - pawns[i].y
-	            const dir_dx = other_dist.x - pawns[i].x
+	            const dir_dy = other_center.y - pawns[i].y
+	            const dir_dx = other_center.x - pawns[i].x
 	            other_dist += dir_dx*dir_dx+dir_dy*dir_dy
 	            other_nbPawns++;
 	        }
 	    }
-	    reward += (my_dist / my_nbPawns) * CENTRALISATION_WEIGHT
-	    reward -= (other_dist / other_nbPawns) * CENTRALISATION_WEIGHT
+	    reward += (my_dist / my_nbPawns) * this.CENTRALISATION_WEIGHT
+	    reward -= (other_dist / other_nbPawns) * this.CENTRALISATION_WEIGHT
 	    
 	    return reward
 	}
