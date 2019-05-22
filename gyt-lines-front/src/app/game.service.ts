@@ -11,12 +11,11 @@ export class GameService {
   pawns : Pawn[] = [];
   
   initGame(gridSize : number) : void {
-    gridSize--;
-    for (let i = 1; i < gridSize; i++) {
-      this.pawns.push( new Pawn(i,0,true ,this.pawns) );
-      this.pawns.push( new Pawn(i,gridSize,true ,this.pawns) );
-      this.pawns.push( new Pawn(0,i,false,this.pawns) );
-      this.pawns.push( new Pawn(gridSize,i,false,this.pawns) );
+    for (let i = 1; i < gridSize-1; i++) {
+      this.pawns.push( new Pawn(i,0,true ,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(i,gridSize-1,true ,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(0,i,false,this.pawns, gridSize) );
+      this.pawns.push( new Pawn(gridSize-1,i,false,this.pawns, gridSize) );
     }
   }
   
