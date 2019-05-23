@@ -7,15 +7,26 @@
     <button class="btn btn-primary semi-btn" (click)="changeUserName()"> OK </button>
   </label>
 
+  <br/>
+  <br/>
+
+  <h4> Taille du plateau : {{this.gridSize}} </h4>
+  <button class="btn btn-primary semi-btn" (click)="smallerGridSize()"> - </button>
+  <button class="btn btn-primary semi-btn" (click)="biggerGridSize()"> + </button>
+
+  <br/>
+  <br/>
+
   <h4> IA </h4>
   <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()">
-    {{(this.game.iaPlayer)? "Activer" : "Désactiver"}} l'IA
+    {{(this.iaPlayer)? "Activer" : "Désactiver"}} l'IA
   </button>
 
   <br/>
   <br/>
+  <br/>
 
-  <h4> Taille du plateau : {{this.game.gridSize}} </h4>
-  <button class="btn btn-primary semi-btn" (click)="smallerGridSize()"> - </button>
-  <button class="btn btn-primary semi-btn" (click)="biggerGridSize()"> + </button>
+  <button class="btn btn-success semi-btn" (click)="makeChanges()"> Enregistrer </button>
+  <button class="btn btn-success semi-btn" routerLink="/menu"> Menu </button>
+
 </div>  
