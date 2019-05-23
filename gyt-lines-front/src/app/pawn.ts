@@ -10,7 +10,7 @@ export class Pawn {
     isWhite : boolean;
     pawns   : Pawn[] ;
     lineContent : Pawn[][];
-    gridSize : number;
+    gridSize    : number;
 
     constructor(x, y, isWhite, pawns, gridSize){
         this.x = x;

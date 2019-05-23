@@ -42,7 +42,12 @@ export class BoardGameComponent implements OnInit {
     let result : {background: string};
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
-        result = pawn.isWhite ? {background: 'white'} : {background: 'black'};
+        if (pawn.isWhite){
+          result = (pawn === this.oldPlace)? {background: 'red'} : {background: 'white'}
+        }
+        else {
+          result = (pawn === this.oldPlace)? {background: 'blue'} : {background: 'black'}
+        }
       }
     });
     return result;
@@ -52,8 +57,14 @@ export class BoardGameComponent implements OnInit {
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite && (!this.iaPlayer || !this.whiteTurn)){
-          this.oldPlace = pawn
-          this.possibleMoves = pawn.possibleMoves()
+          if (this.oldPlace && this.oldPlace === pawn){
+            this.possibleMoves = [];
+            this.oldPlace = null;
+          } 
+          else {
+            this.possibleMoves = pawn.possibleMoves();
+            this.oldPlace = pawn;
+          } 
         }
       }
     });
@@ -73,8 +84,9 @@ export class BoardGameComponent implements OnInit {
     this.possibleMoves.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite){
-          this.possibleMoves = [];
           this.oldPlace.move(pawn);
+          this.possibleMoves = [];
+          this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
           console.log("Victory : " + this.game.checkVictory());  
           if (this.iaPlayer){
@@ -91,10 +103,9 @@ export class BoardGameComponent implements OnInit {
       if (p.isWhite) whitePawns.push(p);
     })
 
-    let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
-
     await sleep(500);
 
+    let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
     this.oldPlace = pawnToPlay;
     this.possibleMoves = pawnToPlay.possibleMoves();
     let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
@@ -102,7 +113,8 @@ export class BoardGameComponent implements OnInit {
     await sleep(1500);
 
     this.possibleMoves = [];
-    this.oldPlace.move(moveToPlay);
+    this.oldPlace = null;
+    pawnToPlay.move(moveToPlay);
     this.whiteTurn = !this.whiteTurn;
     console.log("Victory : " + this.game.checkVictory());  
   }
