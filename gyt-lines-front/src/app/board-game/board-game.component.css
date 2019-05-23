@@ -1,0 +1,29 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.square {
+    width: 5vw;
+    height: 5vw;
+    background: rgba(163, 40, 40, 0.61);
+    border: 1px solid rgb(129, 102, 102);
+    box-shadow: inset 1px 1px 0 rgb(193, 96, 96), inset -1px -1px 0 #c21919;
+    display: flex;
+    justify-content: center;
+}
+
+.pawn {
+    width: 4.6vw;
+    height: 4.6vw;
+    background: white;
+    border-radius: 50%;
+    margin: auto;
+    position: absolute;
+    z-index: 1;
+}
+
+.possiblePawn {
+    z-index: 2;
+    background: rgba(40, 163, 71, 0.747);
+}

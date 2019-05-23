@@ -1,0 +1,33 @@
+
+<div class ="card-body">
+  <h3> Options  - {{this.game.userName}}</h3>
+  <br/>
+  <label> Entrez votre nom : 
+    <input [(ngModel)]="userName"/> 
+    <button class="btn btn-primary semi-btn" (click)="changeUserName()"> OK </button>
+  </label>
+
+  <br/>
+  <br/>
+
+  <h4> Taille du plateau : {{this.gridSize}} </h4>
+  <button class="btn btn-primary semi-btn" (click)="smallerGridSize()"> - </button>
+  <button class="btn btn-primary semi-btn" (click)="biggerGridSize()"> + </button>
+
+  <br/>
+  <br/>
+
+  <h4> IA ({{(this.iaPlayer)? "activée" : "désactivée"}}) </h4>
+  <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()">
+    {{(this.iaPlayer)? "Désactiver" : "Activer"}} l'IA
+  </button>
+
+  <br/>
+  <br/>
+  <br/>
+
+  <button class="btn btn-success semi-btn" (click)="makeChanges()"> Enregistrer </button>
+  <button class="btn btn-success semi-btn" routerLink="/menu"> Menu </button>
+
+</div>  
+

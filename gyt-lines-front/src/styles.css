@@ -1,1 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");   
+
+
+/* Application-wide Styles */
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 250%;
+    margin: 0.5em;
+}
+h2, h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+}
+body {
+    margin: 2em;
+}
+body, input[type="text"]{
+    font-family: Cambria, Georgia;
+}
+
+html, .root, .card-body{
+    background: #DDDDDD;
+}
+
+.card-body {
+    border: thick double #32a1ce;
+    margin-top: 2em;
+}
+
+.btn {
+    margin : 0.5em;
+    padding: 0.5em;
+    width  : 25em;
+}
+
+.complet-btn {
+    width: 16em;
+}
+
+.semi-btn {
+    width: 8em;
+    margin: 1em;
+}
+
+img {
+    width : 20%;
+    height: 20%;
+    margin-right: 5em;
+    margin-left: 5em;
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}

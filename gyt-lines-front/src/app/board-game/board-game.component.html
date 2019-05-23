@@ -1,0 +1,17 @@
+<div class = "card-body">
+  <table class="plate">
+    <tbody>
+      <tr class="row" *ngFor="let row of size">
+        <td class="square" *ngFor="let col of size">
+          <div class="pawn" *ngIf="hasPawn(row, col)" [ngStyle]="getColor(row, col)" (click)="onClickPawn(row, col)"></div>
+          <div class="pawn possiblePawn" *ngIf="isPossibleMoves(row, col)" (click)="move(row,col)"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/>
+  <br/>
+
+  <button class="btn btn-success semi-btn" routerLink="/menu"> Menu </button>
+</div>
