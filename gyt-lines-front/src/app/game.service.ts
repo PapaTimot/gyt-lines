@@ -10,7 +10,7 @@ export class GameService {
 
 	iaPlayer : boolean = false;
 	gridSize : number = 6;
-	userName : string = "Player 1";
+	userName : string = "Joueur 1";
 
   pawns : Pawn[] = [];
   THREAT_WEIGHT         :number = 100;

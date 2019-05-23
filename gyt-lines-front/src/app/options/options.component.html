@@ -4,14 +4,18 @@
   <br/>
   <label> Entrez votre nom : 
     <input [(ngModel)]="userName"/> 
-    <button class="btn btn-primary semi-btn" (click)="changeUserName()"> Submit </button>
+    <button class="btn btn-primary semi-btn" (click)="changeUserName()"> OK </button>
   </label>
 
-  <h4> IA player activated : {{(this.game.iaPlayer)? "yes" : "no"}} </h4>
-  <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()"> Toogle IA Player </button>
+  <h4> IA </h4>
+  <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()">
+    {{(this.game.iaPlayer)? "Activer" : "Désactiver"}} l'IA
+  </button>
 
+  <br/>
+  <br/>
 
-  <h4> Grid size : {{this.game.gridSize}} </h4>
+  <h4> Taille du plateau : {{this.game.gridSize}} </h4>
   <button class="btn btn-primary semi-btn" (click)="smallerGridSize()"> - </button>
   <button class="btn btn-primary semi-btn" (click)="biggerGridSize()"> + </button>
 </div>  
