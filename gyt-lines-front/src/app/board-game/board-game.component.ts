@@ -25,7 +25,8 @@ export class BoardGameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.game.initGame(this.gridSize);
+    this.game.setGridSize(this.gridSize)
+    this.game.initGame();
   }
 
   hasPawn(row: number, col: number) {

@@ -1,17 +1,16 @@
-<div>
-    <label> Entrez votre nom : 
-      <input [(ngModel)]="menu.userName"/>
-    </label>
-</div>
+<div class = "menu card">
 
-<h2>Bienvenue {{menu.userName}} !</h2>
-
-<div class="menu" >
-  <h3>{{menu.name}}</h3>
-  <div *ngFor="let choice of menu.choices" (click)="onSelect(choice)">
-      <button class="btn" routerLink="/{{choice.route}}"> {{choice.name}} </button>
+  <div class = "card-body">
+    <h3>{{menu.name}}</h3>
+    <div *ngFor="let choice of choices">
+        <button class="btn btn-primary" routerLink="/{{choice.route}}"> {{choice.name}} </button>
+    </div>
   </div>
+
 </div>
+
+
+
 
 
 
