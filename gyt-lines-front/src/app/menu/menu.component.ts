@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Menu } from './menu';
-import { MenuChoice } from './menuChoice';
 
 @Component({
   selector: 'app-menu',
@@ -10,7 +8,7 @@ import { MenuChoice } from './menuChoice';
 
 export class MenuComponent implements OnInit {
 
-  choices : MenuChoice[] = [
+  choices : {name : string, route : string}[] = [
     {name : "JOUER"       , route : "game"        },
     {name : "OPTIONS"     , route : "options"     },
     {name : "STATISTIQUES", route : "stats"       },
@@ -18,19 +16,10 @@ export class MenuComponent implements OnInit {
     {name : "CREDITS"     , route : "credits"     }
   ]
 
-  menu: Menu = {
-    name           : 'Menu principal',
-    userName       : ' joueur 1'     , 
-    choices        : this.choices    ,
-    selectedChoice : undefined
-  };
+  name : string = 'Menu principal'
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-  }
-
-  onSelect(choice: MenuChoice): void {
-    this.menu.selectedChoice = choice;
   }
 }

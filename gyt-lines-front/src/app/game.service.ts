@@ -17,12 +17,12 @@ export class GameService {
     this.gridSize = gridSize;
   }
   
-  initGame(gridSize : number) : void {
-    for (let i = 1; i < gridSize-1; i++) {
-      this.pawns.push( new Pawn(i,0,true ,this.pawns, gridSize) );
-      this.pawns.push( new Pawn(i,gridSize-1,true ,this.pawns, gridSize) );
-      this.pawns.push( new Pawn(0,i,false,this.pawns, gridSize) );
-      this.pawns.push( new Pawn(gridSize-1,i,false,this.pawns, gridSize) );
+  initGame() : void {
+    for (let i = 1; i < this.gridSize-1; i++) {
+      this.pawns.push( new Pawn(i,0,true ,this.pawns, this.gridSize) );
+      this.pawns.push( new Pawn(i,this.gridSize-1,true ,this.pawns, this.gridSize) );
+      this.pawns.push( new Pawn(0,i,false,this.pawns, this.gridSize) );
+      this.pawns.push( new Pawn(this.gridSize-1,i,false,this.pawns, this.gridSize) );
     }
   }
 
