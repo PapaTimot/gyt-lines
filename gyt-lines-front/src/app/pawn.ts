@@ -81,7 +81,7 @@ export class Pawn {
   
     validateMoves(move, line, possibilities) : void {
         // if out of the board --> trash
-        if(move.x > this.gridSize || move.y > this.gridSize || move.x < 0 || move.y < 0) return
+        if(move.x >= this.gridSize || move.y >= this.gridSize || move.x < 0 || move.y < 0) return
 
         let valid: boolean = true;
         line.forEach( (p) => {

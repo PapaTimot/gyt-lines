@@ -1,7 +1,8 @@
 <div class = "menu card">
 
   <div class = "card-body">
-    <h3>{{menu.name}}</h3>
+    <h3> Menu principal </h3>
+    <br/>
     <div *ngFor="let choice of choices">
         <button class="btn btn-primary" routerLink="/{{choice.route}}"> {{choice.name}} </button>
     </div>
