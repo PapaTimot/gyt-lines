@@ -101,7 +101,7 @@ export class BoardGameComponent implements OnInit {
           this.whiteTurn = !this.whiteTurn;
           console.log("Victory : " + this.game.checkVictory());  
           if (this.iaPlayer){
-            this.iaPlay();
+            this.minMaxPlay();
           }        
         }
       }
