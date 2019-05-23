@@ -9,7 +9,7 @@ export class GameService {
 	constructor() {}
 
 	iaPlayer : boolean = true;
-	gridSize : number = 6;
+	gridSize : number = 8;
 	userName : string = "Joueur 1";
 
   pawns : Pawn[] = [];
