@@ -11,8 +11,8 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  iaPlayer : boolean = true
-  gridSize : number = 3;
+  iaPlayer : boolean = true;
+  gridSize : number = 5;
 
   game: GameService;
   size: number [] = Array.from(Array(this.gridSize), (x, index) => index);
