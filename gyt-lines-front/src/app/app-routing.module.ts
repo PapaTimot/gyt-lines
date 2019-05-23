@@ -7,10 +7,12 @@ import { InstructionsComponent } from './instructions/instructions.component'
 import { CreditsComponent      } from './credits/credits.component'
 
 const routes: Routes = [
-  { path: ''        , component : MenuComponent              },
+  { path: ''            , component : MenuComponent                  },
+  { path: 'menu'       , component : MenuComponent             },
   { path: 'game'        , component : BoardGameComponent         },
   { path: 'options'     , component : OptionsComponent           },
-  { path: 'instructions', component : InstructionsComponent      },
+  { path: 'instructions', component : 
+  InstructionsComponent      },
   { path: 'credits'     , component : CreditsComponent           }
 ];
 
