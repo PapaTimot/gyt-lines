@@ -12,7 +12,7 @@ import { sleep } from 'sleep-ts'
 export class BoardGameComponent implements OnInit {
 
   iaPlayer : boolean = true
-  gridSize : number = 5;
+  gridSize : number = 3;
 
   game: GameService;
   size: number [] = Array.from(Array(this.gridSize), (x, index) => index);
@@ -90,13 +90,13 @@ export class BoardGameComponent implements OnInit {
     this.game.pawns.forEach( (p) =>{
       if (p.isWhite) whitePawns.push(p);
     })
+
     let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
 
     await sleep(500);
 
     this.oldPlace = pawnToPlay;
     this.possibleMoves = pawnToPlay.possibleMoves();
-    console.log(this.possibleMoves);
     let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
     
     await sleep(1500);
@@ -105,7 +105,6 @@ export class BoardGameComponent implements OnInit {
     this.oldPlace.move(moveToPlay);
     this.whiteTurn = !this.whiteTurn;
     console.log("Victory : " + this.game.checkVictory());  
-
   }
 
   getRandomInt(max: number) {

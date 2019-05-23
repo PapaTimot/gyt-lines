@@ -9,6 +9,13 @@ export class GameService {
 	constructor() {}
 
   pawns : Pawn[] = [];
+  gridSize : number;
+  THREAT_WEIGHT         :number = 100;
+  CENTRALISATION_WEIGHT :number = 1;
+  
+  setGridSize(gridSize : number) : void {
+    this.gridSize = gridSize;
+  }
   
   initGame(gridSize : number) : void {
     for (let i = 1; i < gridSize-1; i++) {
@@ -18,10 +25,6 @@ export class GameService {
       this.pawns.push( new Pawn(gridSize-1,i,false,this.pawns, gridSize) );
     }
   }
-  
-	THREAT_WEIGHT         :number = 100;
-	CENTRALISATION_WEIGHT :number = 1;
-
 
 	checkVictory() : number {
 		let out = 0;
@@ -90,7 +93,7 @@ export class GameService {
 				ys+=p.y;
 			}
 		});
-		return new Pawn(Math.round(xs/nb),Math.round(ys/nb),isWhite,this.pawns)
+		return new Pawn(Math.round(xs/nb),Math.round(ys/nb),isWhite,this.pawns, this.gridSize)
 	}
 
 	reward(pawns,mycolor) : number{
