@@ -9,15 +9,12 @@ export class GameService {
 	constructor() {}
 
 	iaPlayer : boolean = false;
+	gridSize : number = 6;
+	userName : string = "Player 1";
 
   pawns : Pawn[] = [];
-  gridSize : number;
   THREAT_WEIGHT         :number = 100;
   CENTRALISATION_WEIGHT :number = 1;
-  
-  setGridSize(gridSize : number) : void {
-    this.gridSize = gridSize;
-  }
   
   initGame() : void {
 		this.pawns = [];

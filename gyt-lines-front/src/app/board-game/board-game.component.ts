@@ -11,22 +11,25 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  iaPlayer : boolean = false;
-  gridSize : number = 4;
-
+  iaPlayer : boolean;
+  gridSize : number;
   game: GameService;
-  size: number [] = Array.from(Array(this.gridSize), (x, index) => index);
-  possibleMoves : Pawn[] = [];
+
+  size: number [];
+  possibleMoves : Pawn[];
   oldPlace: Pawn;
-  whiteTurn : boolean = false;
+  whiteTurn : boolean ;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
     this.iaPlayer = this.game.iaPlayer;
+    this.gridSize = this.game.gridSize;
+    this.size = Array.from(Array(this.gridSize), (x, index) => index);
+    this.possibleMoves = [];
+    this.whiteTurn = false;
   }
 
   ngOnInit(): void {
-    this.game.setGridSize(this.gridSize)
     this.game.initGame();
   }
 

@@ -1,16 +1,17 @@
-<div class = "card">
 
-  <div class ="card-body">
-    <h3> Options  - {{userName}}</h3>
-    <br/>
-    <label> Entrez votre nom : 
-      <input [(ngModel)]="userName"/>
-    </label>
-  </div>  
+<div class ="card-body">
+  <h3> Options  - {{this.game.userName}}</h3>
+  <br/>
+  <label> Entrez votre nom : 
+    <input [(ngModel)]="userName"/> 
+    <button class="btn btn-primary semi-btn" (click)="changeUserName()"> Submit </button>
+  </label>
 
-  <div class ="card-body">
-    <h4> IA player activated : {{(this.game.iaPlayer)? "yes" : "no"}} </h4>
-    <button class="btn btn-primary" (click)="changeIaPlayer()">Toogle IA Player</button>
-  </div>  
+  <h4> IA player activated : {{(this.game.iaPlayer)? "yes" : "no"}} </h4>
+  <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()"> Toogle IA Player </button>
 
-</div>
+
+  <h4> Grid size : {{this.game.gridSize}} </h4>
+  <button class="btn btn-primary semi-btn" (click)="smallerGridSize()"> - </button>
+  <button class="btn btn-primary semi-btn" (click)="biggerGridSize()"> + </button>
+</div>  
