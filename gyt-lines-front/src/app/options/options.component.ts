@@ -25,13 +25,13 @@ export class OptionsComponent implements OnInit {
   }
 
   biggerGridSize() : void{
-    if (this.game.gridSize < 10){
+    if (this.gridSize < 8){
       this.gridSize++;
     }
   }
 
   smallerGridSize() : void{
-    if (this.game.gridSize > 3){
+    if (this.gridSize > 3){
       this.gridSize--;
     }
   }
