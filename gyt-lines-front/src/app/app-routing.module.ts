@@ -7,8 +7,7 @@ import { InstructionsComponent } from './instructions/instructions.component'
 import { CreditsComponent      } from './credits/credits.component'
 
 const routes: Routes = [
-  { path: ''            , redirectTo: '/menu', pathMatch: 'full' },
-  { path: 'menu'        , component : MenuComponent              },
+  { path: ''        , component : MenuComponent              },
   { path: 'game'        , component : BoardGameComponent         },
   { path: 'options'     , component : OptionsComponent           },
   { path: 'instructions', component : InstructionsComponent      },
