@@ -15,6 +15,11 @@ export class OptionsComponent implements OnInit {
     this.game = gameService;
   }
 
+  changeIaPlayer() : void{
+    this.game.initGame();
+    this.game.iaPlayer = !this.game.iaPlayer;
+  }
+
   ngOnInit() {
   }
 

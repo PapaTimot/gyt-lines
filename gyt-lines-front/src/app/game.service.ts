@@ -8,6 +8,8 @@ export class GameService {
 
 	constructor() {}
 
+	iaPlayer : boolean = false;
+
   pawns : Pawn[] = [];
   gridSize : number;
   THREAT_WEIGHT         :number = 100;
@@ -18,6 +20,7 @@ export class GameService {
   }
   
   initGame() : void {
+		this.pawns = [];
     for (let i = 1; i < this.gridSize-1; i++) {
       this.pawns.push( new Pawn(i,0,true ,this.pawns, this.gridSize) );
       this.pawns.push( new Pawn(i,this.gridSize-1,true ,this.pawns, this.gridSize) );
