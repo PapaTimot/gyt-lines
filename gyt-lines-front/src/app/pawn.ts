@@ -89,7 +89,8 @@ export class Pawn {
             if(p.isWhite !== this.isWhite && p.isBetween(this, move)) valid = false;
             
             // if there is an other of our pawns at this place --> trash
-            if(p.isWhite === this.isWhite && p.isSamePlace(this)) valid = false;
+            if(p.isWhite === this.isWhite && p.isSamePlace(move)) valid = false;
+
         });
         // line.forEach(element => {
         //     console.log(`isWhite : ${element.isWhite} - x : ${element.x} - y : ${element.y}`);
