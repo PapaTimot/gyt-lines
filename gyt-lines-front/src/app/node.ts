@@ -2,7 +2,7 @@ import { Pawn } from './pawn';
 import { GameService } from './game.service';
 
 export class Node {
-	MINMAX_DEPTH	: number = 5;
+	MINMAX_DEPTH	: number = 2;
 
 	state      		: Pawn[];
 	nextStates  	: Node[];
@@ -12,29 +12,31 @@ export class Node {
 
 	constructor(gameService: GameService, state, player_color, my_color, depth, moved){
 		this.game           = gameService;
-		this.state 			= Array.from(state);
+		this.state 			= state;
 		this.nextStates 	= [];
 		this.val 			= 0;
 		this.lastPawnMoved 	= moved;
 
 
 		if(depth>this.MINMAX_DEPTH){
-			this.val = this.game.reward(this.game.pawns,my_color);
+			this.val = this.game.reward(this.state,my_color);
 		} else {
-			for (var i = this.game.pawns.length - 1; i >= 0; i--) {
-				if(this.game.pawns[i].isWhite == player_color){
-					const nextPlaces = this.game.pawns[i].possibleMoves();
-					const moved = this.game.pawns.splice(i,1);
+			var gameCopy = Array.from(this.state);
+			for (var i = gameCopy.length - 1; i >= 0; i--) {
+				if(gameCopy[i].isWhite == player_color){
+					const nextPlaces = gameCopy[i].possibleMoves();
+					const pawnToMove = this.state[i];
+					gameCopy.splice(i,1);
 					for (var j = nextPlaces.length - 1; j >= 0; j--) {
-						const nextBoard = Array.from(this.game.pawns);
+						const nextBoard = Array.from(gameCopy);
 						nextBoard.push(nextPlaces[j]);
-						this.nextStates.push(new Node(this.game, nextBoard, !player_color, my_color, depth+1, moved[0]));
+						this.nextStates.push(new Node(this.game, nextBoard, !player_color, my_color, depth+1, pawnToMove));
 					}
-					this.game.pawns = Array.from(this.state);
+					gameCopy = Array.from(this.state);
 				}
 			}
 			if (this.nextStates == []) {
-				this.val = this.game.reward(this.game.pawns,my_color);
+				this.val = this.game.reward(this.state,my_color);
 			}
 		}
 	}

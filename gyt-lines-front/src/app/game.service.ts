@@ -48,9 +48,10 @@ export class GameService {
 					const cluster = clusters[i];
 					if(p.isConnected(cluster)){
 						lastCluster = lastCluster.concat(cluster);
-						clusters.slice(i,1);
+						clusters.splice(i,1);
 					}
 				}
+				clusters.push(lastCluster)
 			}
 		}
 		return clusters;
@@ -68,7 +69,7 @@ export class GameService {
 			} else {
 				pawn = clusters[0][0]
 			}
-			const oldPawns = this.pawns;
+			const oldPawns = Array.from(this.pawns);
 			const possibleMoves = pawn.possibleMoves();
 			for (let i = possibleMoves.length - 1; i >= 0; i--) {
 				pawn.move(possibleMoves[i]);
