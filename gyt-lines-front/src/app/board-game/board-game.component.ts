@@ -43,18 +43,23 @@ export class BoardGameComponent implements OnInit {
     return result;
   }
 
-  getColor(row: number, col: number): {background: string} {
-    let result : {background: string};
+  getColor(row: number, col: number): {background: string, border: string} {
+    let result: {background: string, border: string} = {background: 'purple', border: 'none'};
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (pawn.isWhite){
-          result = (pawn === this.oldPlace)? {background: 'red'} : {background: 'white'}
+          result.background = (pawn === this.oldPlace)? 'red' : 'white';
+          if(this.whiteTurn)
+            result.border = '2px solid black';
         }
         else {
-          result = (pawn === this.oldPlace)? {background: 'blue'} : {background: 'black'}
+          result.background = (pawn === this.oldPlace)? 'blue' : 'black';
+          if(!this.whiteTurn)
+            result.border = '2px solid white';
         }
       }
     });
+    
     return result;
   }
 
