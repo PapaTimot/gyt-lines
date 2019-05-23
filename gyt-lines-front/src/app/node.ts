@@ -1,5 +1,5 @@
 import { Pawn } from './pawn';
-import { GameService } from '../game.service';
+import { GameService } from './game.service';
 
 export class Node {
 	MINMAX_DEPTH	: number = 5;
@@ -12,7 +12,7 @@ export class Node {
 
 	constructor(gameService: GameService, state, player_color, my_color, depth, moved){
 		this.game           = gameService;
-		this.state 			= state;
+		this.state 			= Array.from(state);
 		this.nextStates 	= [];
 		this.val 			= 0;
 		this.lastPawnMoved 	= moved;
@@ -28,7 +28,7 @@ export class Node {
 					for (var j = nextPlaces.length - 1; j >= 0; j--) {
 						const nextBoard = Array.from(this.game.pawns);
 						nextBoard.push(nextPlaces[j]);
-						this.nextStates.push(new Node(this.gameService, nextBoard, !player_color, my_color, depth+1, moved[0]));
+						this.nextStates.push(new Node(this.game, nextBoard, !player_color, my_color, depth+1, moved[0]));
 					}
 					this.game.pawns = Array.from(this.state);
 				}
@@ -43,8 +43,8 @@ export class Node {
 		if (this.nextStates.length == 0) {
 			return -1;
 		}
-		for (var i = nextStates.length - 1; i >= 0; i--) {
-			nextStates[i].calcValue(!isMax);
+		for (var i = this.nextStates.length - 1; i >= 0; i--) {
+			this.nextStates[i].calcValue(!isMax);
 		}
 		let vals = this.nextStates.map(x => x.val);
 		let index = 0;

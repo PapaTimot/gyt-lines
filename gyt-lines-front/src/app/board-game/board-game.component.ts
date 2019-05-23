@@ -12,7 +12,7 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  iaPlayer : boolean = true;
+  iaPlayer : boolean = false;
   gridSize : number = 5;
 
   game: GameService;
@@ -127,7 +127,12 @@ export class BoardGameComponent implements OnInit {
   async minMaxPlay(){
     let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null)
 
+    await sleep(500);
+    console.log("tree created");
+
     const indexOfNext = minmaxTree.calcValue(true);
+    await sleep(500);
+    console.log("val calculated");
     this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
     this.possibleMoves = this.oldPlace.possibleMoves();
     const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))

@@ -119,11 +119,11 @@ export class Pawn {
     }
 
     isConnected(cluster) : boolean{
-        cluster.forEach( (p) => {
-            if(Math.abs(this.x-p.x)<=1 && Math.abs(this.y-p.y)<=1) {
-            return true
+        for (var i = cluster.length - 1; i >= 0; i--) {
+            if(Math.abs(this.x-cluster[i].x)<=1 && Math.abs(this.y-cluster[i].y)<=1) {
+                return true
             }
-        });
+        }
         return false;
     }
 }
