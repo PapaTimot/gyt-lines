@@ -134,8 +134,8 @@ export class GameService {
 					other_nbPawns++;
 				}
 			}
-			reward += (my_dist / my_nbPawns) * this.CENTRALISATION_WEIGHT
-			reward -= (other_dist / other_nbPawns) * this.CENTRALISATION_WEIGHT
+			reward += (my_nbPawns / my_dist) * this.CENTRALISATION_WEIGHT
+			reward -= (other_nbPawns / other_dist) * this.CENTRALISATION_WEIGHT
 
 			return reward
 		}
