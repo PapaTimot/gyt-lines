@@ -13,22 +13,22 @@ export class Pawn {
     gridSize    : number;
 
     constructor(x, y, isWhite, pawns, gridSize){
-        this.x = x;
-        this.y = y;
-        this.isWhite = isWhite;
-        this.pawns   = pawns  ;
+        this.x              = x;
+        this.y              = y;
+        this.isWhite        = isWhite;
+        this.pawns          = pawns  ;
         this.lineContent	= [[],[],[],[]];
-        this.gridSize = gridSize;
+        this.gridSize       = gridSize;
     }
   
     move(newPlace) : void {
-        this.pawns.forEach( (p,i) => {
-            if(p.isSamePlace(newPlace)){
+        for (var i = this.pawns.length - 1; i >= 0; i--) {
+            if(this.pawns[i].isSamePlace(newPlace)){
                 this.pawns.splice(i, 1);
             }
-        });
+        }
         this.pawns.push(newPlace);
-        const i = this.pawns.indexOf(this);
+        i = this.pawns.indexOf(this);
         this.pawns.splice(i, 1);
     }
   
@@ -119,12 +119,11 @@ export class Pawn {
     }
 
     isConnected(cluster) : boolean{
-        let result : boolean = false;
-        cluster.forEach( (p) => {
-            if(Math.abs(this.x-p.x)<=1 && Math.abs(this.y-p.y)<=1) {
-                result =  true;
+        for (var i = cluster.length - 1; i >= 0; i--) {
+            if(Math.abs(this.x-cluster[i].x)<=1 && Math.abs(this.y-cluster[i].y)<=1) {
+                return true
             }
-        });
-        return result;
+        }
+        return false;
     }
 }
