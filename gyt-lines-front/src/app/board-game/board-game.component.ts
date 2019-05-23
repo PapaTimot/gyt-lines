@@ -131,7 +131,7 @@ async randomPlay(){
 }
 
 async minMaxPlay(){
-  await sleep(100);
+  await sleep(1);
 	let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null)
 	const indexOfNext = minmaxTree.calcValue(true);
 
