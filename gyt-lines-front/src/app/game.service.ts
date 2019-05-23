@@ -8,7 +8,7 @@ export class GameService {
 
 	constructor() {}
 
-	iaPlayer : boolean = false;
+	iaPlayer : boolean = true;
 	gridSize : number = 6;
 	userName : string = "Joueur 1";
 

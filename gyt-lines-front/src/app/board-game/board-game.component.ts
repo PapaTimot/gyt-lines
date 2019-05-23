@@ -108,7 +108,7 @@ export class BoardGameComponent implements OnInit {
     });
   }
 
-	async randomPlay(){
+async randomPlay(){
 		let whitePawns : Pawn[] = [];
 		this.game.pawns.forEach( (p) =>{
 			if (p.isWhite) whitePawns.push(p);
@@ -131,6 +131,7 @@ export class BoardGameComponent implements OnInit {
 }
 
 async minMaxPlay(){
+  await sleep(100);
 	let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null)
 	const indexOfNext = minmaxTree.calcValue(true);
 
