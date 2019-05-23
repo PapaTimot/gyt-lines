@@ -8,13 +8,13 @@ export class GameService {
 
 	constructor() {}
 
-	iaPlayer : boolean = true;
-	gridSize : number = 8;
+	iaPlayer : string = "minMax";
+	gridSize : number = 6;
 	userName : string = "Joueur 1";
 
-  pawns : Pawn[] = [];
-  THREAT_WEIGHT         :number = 100;
-  CENTRALISATION_WEIGHT :number = 1;
+  	pawns : Pawn[] = [];
+  	THREAT_WEIGHT         :number = 100;
+  	CENTRALISATION_WEIGHT :number = 1;
   
   initGame() : void {
 		this.pawns = [];

@@ -11,7 +11,8 @@ export class OptionsComponent implements OnInit {
   game     : GameService;
   userName : string;
   gridSize : number;
-  iaPlayer : boolean;
+  // possible values are 'none', 'random' and 'minMax'
+  iaPlayer : string;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
@@ -20,8 +21,21 @@ export class OptionsComponent implements OnInit {
     this.iaPlayer = this.game.iaPlayer;
   }
 
-  changeIaPlayer() : void{
-    this.iaPlayer = !this.iaPlayer;
+  changeIaPlayer(iaPlayer : string) : void{
+    this.iaPlayer = iaPlayer;
+  }
+
+  getIaPlayer() : string{
+    switch (this.iaPlayer) {
+      case "none":
+        return "vrai joueur"
+      case "random":
+        return "IA facile"
+      case "minMax":
+        return "IA moyenne"
+      default:
+        return ""
+    }
   }
 
   biggerGridSize() : void{

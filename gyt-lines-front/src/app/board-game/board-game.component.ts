@@ -12,7 +12,8 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  iaPlayer : boolean;
+  // possible values are 'none', 'random' and 'minMax'
+  iaPlayer : string;
   gridSize : number;
   game: GameService;
 
@@ -67,7 +68,7 @@ export class BoardGameComponent implements OnInit {
   onClickPawn(row: number, col: number) {
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
-        if (this.whiteTurn === pawn.isWhite && (!this.iaPlayer || !this.whiteTurn)){
+        if (this.whiteTurn === pawn.isWhite && ( (this.iaPlayer === "none") || !this.whiteTurn)){
           if (this.oldPlace && this.oldPlace === pawn){
             this.possibleMoves = [];
             this.oldPlace = null;
@@ -100,9 +101,12 @@ export class BoardGameComponent implements OnInit {
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
           console.log("Victory : " + this.game.checkVictory());  
-          if (this.iaPlayer){
-            this.minMaxPlay();
+          if (this.iaPlayer === "random"){
+            this.randomPlay();
           }        
+          else if (this.iaPlayer === "minMax") {
+            this.minMaxPlay();
+          }
         }
       }
     });

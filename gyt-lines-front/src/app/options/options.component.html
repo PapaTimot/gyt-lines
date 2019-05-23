@@ -17,10 +17,10 @@
   <br/>
   <br/>
 
-  <h4> IA ({{(this.iaPlayer)? "activée" : "désactivée"}}) </h4>
-  <button class="btn btn-primary complet-btn" (click)="changeIaPlayer()">
-    {{(this.iaPlayer)? "Désactiver" : "Activer"}} l'IA
-  </button>
+  <h4> Joueurs blancs : ({{getIaPlayer()}}) </h4>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('none')"> Vrai joueur </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('random')"> IA facile </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('minMax')"> IA moyenne </button>
 
   <br/>
   <br/>
