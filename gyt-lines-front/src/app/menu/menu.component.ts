@@ -16,8 +16,6 @@ export class MenuComponent implements OnInit {
     {name : "CREDITS"     , route : "credits"     }
   ]
 
-  name : string = 'Menu principal'
-
   constructor() {}
 
   ngOnInit() {

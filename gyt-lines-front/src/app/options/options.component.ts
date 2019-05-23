@@ -8,7 +8,8 @@ import { GameService } from '../game.service';
 })
 export class OptionsComponent implements OnInit {
 
-  game : GameService;
+  game     : GameService;
+  userName : string = "Joueur 1";
 
   constructor(gameService: GameService) { 
     this.game = gameService;

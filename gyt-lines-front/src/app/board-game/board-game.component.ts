@@ -55,6 +55,8 @@ export class BoardGameComponent implements OnInit {
   }
 
   onClickPawn(row: number, col: number) {
+    console.log(this.game.pawns);
+    
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite && (!this.iaPlayer || !this.whiteTurn)){
@@ -89,7 +91,7 @@ export class BoardGameComponent implements OnInit {
           this.possibleMoves = [];
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
-          console.log("Victory : " + this.game.checkVictory());  
+          //console.log("Victory : " + this.game.checkVictory());  
           if (this.iaPlayer){
             this.iaPlay();
           }        
@@ -99,6 +101,7 @@ export class BoardGameComponent implements OnInit {
   }
 
   async iaPlay(){
+    console.log(this.game.pawns);
     let whitePawns : Pawn[] = [];
     this.game.pawns.forEach( (p) =>{
       if (p.isWhite) whitePawns.push(p);
@@ -117,7 +120,7 @@ export class BoardGameComponent implements OnInit {
     this.oldPlace = null;
     pawnToPlay.move(moveToPlay);
     this.whiteTurn = !this.whiteTurn;
-    console.log("Victory : " + this.game.checkVictory());  
+    //console.log("Victory : " + this.game.checkVictory());  
   }
 
   getRandomInt(max: number) {
