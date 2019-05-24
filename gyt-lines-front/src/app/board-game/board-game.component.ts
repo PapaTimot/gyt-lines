@@ -77,7 +77,7 @@ export class BoardGameComponent implements OnInit {
             this.oldPlace = null;
           } 
           else {
-            this.possibleMoves = pawn.possibleMoves();
+            this.possibleMoves = pawn.possibleMoves(pawn.pawns);
             this.oldPlace = pawn;
           } 
         }
@@ -120,30 +120,31 @@ export class BoardGameComponent implements OnInit {
     });
   }
 
-  async randomPlay(){
-    if(this.game.victory){
+async randomPlay(){
+  if(this.game.victory){
       return;
     }
-      let whitePawns : Pawn[] = [];
-      this.game.pawns.forEach( (p) =>{
-        if (p.isWhite) whitePawns.push(p);
-      })
+		let whitePawns : Pawn[] = [];
+		this.game.pawns.forEach( (p) =>{
+			if (p.isWhite) whitePawns.push(p);
+		})
 
-      await sleep(500);
+		await sleep(500);
 
-      let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
-      this.oldPlace = pawnToPlay;
-      this.possibleMoves = pawnToPlay.possibleMoves();
-      let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
+		let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
+		this.oldPlace = pawnToPlay;
+		this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
+		let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
 
-      await sleep(1500);
+		await sleep(1500);
 
-      this.possibleMoves = [];
-      this.oldPlace = null;
-      pawnToPlay.move(moveToPlay);
-      this.whiteTurn = !this.whiteTurn;
-      this.checkEnd();
-  }
+		this.possibleMoves = [];
+		this.oldPlace = null;
+		pawnToPlay.move(moveToPlay);
+		this.whiteTurn = !this.whiteTurn;
+		this.checkEnd();  
+}
+
 
   async minMaxPlay(difficulty){
     if(this.game.victory){
@@ -153,9 +154,9 @@ export class BoardGameComponent implements OnInit {
     let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null,difficulty)
     const indexOfNext = minmaxTree.calcValue(true);
 
-    this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
-    this.possibleMoves = this.oldPlace.possibleMoves();
-    const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
+	this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
+	this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
+	const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
 
     await sleep(1000);
 
