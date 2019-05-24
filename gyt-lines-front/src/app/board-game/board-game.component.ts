@@ -63,18 +63,18 @@ export class BoardGameComponent implements OnInit {
     return result;
   }
 
-  async callIA() {
+  callIA() {
     if ( (this.whiteTurn && this.game.whitePlayer === "random") 
     || (!this.whiteTurn && this.game.blackPlayer === "random")){
-      await this.randomPlay();
+      this.randomPlay();
     }        
     else if ( (this.whiteTurn && this.game.whitePlayer === "minMax") 
     || (!this.whiteTurn && this.game.blackPlayer === "minMax")){
-      await this.minMaxPlay(1);
+      this.minMaxPlay(1);
     }
     else if ( (this.whiteTurn && this.game.whitePlayer === "minMaxImproved") 
     || (!this.whiteTurn && this.game.blackPlayer === "minMaxImproved")){
-      await this.minMaxPlay(2);
+      this.minMaxPlay(2);
     }
   }
 
@@ -149,7 +149,7 @@ export class BoardGameComponent implements OnInit {
     pawnToPlay.move(moveToPlay);
     this.whiteTurn = !this.whiteTurn;
     this.checkEnd();
-    await this.callIA();
+    this.callIA();
   }
 
   async minMaxPlay(difficulty){
@@ -174,7 +174,7 @@ export class BoardGameComponent implements OnInit {
     this.oldPlace = null;
     this.whiteTurn = !this.whiteTurn;
     this.checkEnd();
-    await this.callIA();
+    this.callIA();
   }
 
   getRandomInt(max: number) {
