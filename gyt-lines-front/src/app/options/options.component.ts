@@ -11,7 +11,7 @@ export class OptionsComponent implements OnInit {
   game     : GameService;
   userName : string;
   gridSize : number;
-  // possible values are 'none', 'random' and 'minMax'
+   // possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
   iaPlayer : string;
 
   constructor(gameService: GameService) { 
@@ -33,6 +33,8 @@ export class OptionsComponent implements OnInit {
         return "IA facile"
       case "minMax":
         return "IA moyenne"
+      case "minMaxImproved":
+        return "IA difficile"
       default:
         return ""
     }
