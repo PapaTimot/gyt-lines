@@ -12,8 +12,6 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  // possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
-  iaPlayer : string;
   gridSize : number;
   game: GameService;
 
@@ -24,7 +22,6 @@ export class BoardGameComponent implements OnInit {
 
   constructor(gameService: GameService) { 
     this.game = gameService;
-    this.iaPlayer = this.game.iaPlayer;
     this.gridSize = this.game.gridSize;
     this.size = Array.from(Array(this.gridSize), (x, index) => index);
     this.possibleMoves = [];
@@ -33,6 +30,7 @@ export class BoardGameComponent implements OnInit {
 
   ngOnInit(): void {
     this.game.initGame();
+    this.callIA();
   }
 
   hasPawn(row: number, col: number) {
@@ -65,21 +63,39 @@ export class BoardGameComponent implements OnInit {
     return result;
   }
 
+  async callIA() {
+    if ( (this.whiteTurn && this.game.whitePlayer === "random") 
+    || (!this.whiteTurn && this.game.blackPlayer === "random")){
+      await this.randomPlay();
+    }        
+    else if ( (this.whiteTurn && this.game.whitePlayer === "minMax") 
+    || (!this.whiteTurn && this.game.blackPlayer === "minMax")){
+      await this.minMaxPlay(1);
+    }
+    else if ( (this.whiteTurn && this.game.whitePlayer === "minMaxImproved") 
+    || (!this.whiteTurn && this.game.blackPlayer === "minMaxImproved")){
+      await this.minMaxPlay(2);
+    }
+  }
+
   onClickPawn(row: number, col: number) {
     if(this.game.victory){
       return;
     }
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
-        if (this.whiteTurn === pawn.isWhite && ( (this.iaPlayer === "none") || !this.whiteTurn)){
-          if (this.oldPlace && this.oldPlace === pawn){
-            this.possibleMoves = [];
-            this.oldPlace = null;
-          } 
-          else {
-            this.possibleMoves = pawn.possibleMoves(pawn.pawns);
-            this.oldPlace = pawn;
-          } 
+        if (this.whiteTurn === pawn.isWhite){
+          if ( (this.whiteTurn && this.game.whitePlayer === "none") 
+            || (!this.whiteTurn && this.game.blackPlayer === "none")){
+              if (this.oldPlace && this.oldPlace === pawn){
+                this.possibleMoves = [];
+                this.oldPlace = null;
+              } 
+              else {
+                this.possibleMoves = pawn.possibleMoves(pawn.pawns);
+                this.oldPlace = pawn;
+              } 
+            }
         }
       }
     });
@@ -106,15 +122,7 @@ export class BoardGameComponent implements OnInit {
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
           this.checkEnd();
-          if (this.iaPlayer === "random"){
-            this.randomPlay();
-          }        
-          else if (this.iaPlayer === "minMax") {
-            this.minMaxPlay(1);
-          }
-          else if (this.iaPlayer === "minMaxImproved") {
-            this.minMaxPlay(2);
-          }
+          this.callIA();
         }
       }
     });
@@ -124,47 +132,46 @@ async randomPlay(){
   if(this.game.victory){
       return;
     }
-		let whitePawns : Pawn[] = [];
-		this.game.pawns.forEach( (p) =>{
-			if (p.isWhite) whitePawns.push(p);
-		})
+      let pawns : Pawn[] = [];
+      this.game.pawns.forEach( (p) =>{
+        if (p.isWhite === this.whiteTurn) pawns.push(p);
+      })
 
-		await sleep(500);
+      let pawnToPlay = pawns[this.getRandomInt(pawns.length)];
+      this.oldPlace = pawnToPlay;
+      this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
+      let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
 
-		let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
-		this.oldPlace = pawnToPlay;
-		this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
-		let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
+      await sleep(this.game.animationDelay);
 
-		await sleep(1500);
-
-		this.possibleMoves = [];
-		this.oldPlace = null;
-		pawnToPlay.move(moveToPlay);
-		this.whiteTurn = !this.whiteTurn;
-		this.checkEnd();  
-}
-
+      this.possibleMoves = [];
+      this.oldPlace = null;
+      pawnToPlay.move(moveToPlay);
+      this.whiteTurn = !this.whiteTurn;
+      this.checkEnd();
+      this.callIA();
+  }
 
   async minMaxPlay(difficulty){
     if(this.game.victory){
       return;
     }
     await sleep(1);
-    let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null,difficulty)
+    let minmaxTree = new Node(this.game, this.game.pawns,this.whiteTurn,this.whiteTurn,0,null,difficulty)
     const indexOfNext = minmaxTree.calcValue(true);
 
 	this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
 	this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
 	const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
 
-    await sleep(1000);
+    await sleep(this.game.animationDelay);
 
     this.possibleMoves = [];
     this.oldPlace.move(moveToPlay);
     this.oldPlace = null;
     this.whiteTurn = !this.whiteTurn;
     this.checkEnd();
+    this.callIA();
   }
 
   getRandomInt(max: number) {
@@ -173,10 +180,6 @@ async randomPlay(){
 
   checkEnd() : number {
     this.game.victory = this.game.checkVictory();
-    if(this.game.victory){
-      console.log(this.game.nbTurn);
-      this.game.nbTurn = 0;
-    }
     return this.game.victory;
   }
 
@@ -195,5 +198,10 @@ async randomPlay(){
         break;
     }
     return result;
+  }
+
+  endGame() : void {
+    this.game.victory = 0;
+    this.game.nbTurn = 0;
   }
 }

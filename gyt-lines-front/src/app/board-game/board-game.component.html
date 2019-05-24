@@ -9,11 +9,12 @@
       </tr>
     </tbody>
   </table>
+  
   <div class="victory" *ngIf="game.victory">{{getWinner()}}</div>
 
   <br/>
   <br/>
 
-  <button class="btn btn-success semi-btn" routerLink="/menu"> Menu </button>
-  <button class="btn btn-success semi-btn" *ngIf="checkEnd()" routerLink="/victory"> Résultats </button>
+  <button class="btn btn-success semi-btn" (click)="endGame()" routerLink="/menu"> Menu </button>
+  <button class="btn btn-success semi-btn" *ngIf="checkEnd()" (click)="endGame()" routerLink="/victory"> Résultats </button>
 </div>

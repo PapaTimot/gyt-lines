@@ -8,25 +8,40 @@ import { GameService } from '../game.service';
 })
 export class OptionsComponent implements OnInit {
 
+	// possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
+	blackPlayer : string;
+  whitePlayer : string;
+  animationDelay : number
+
   game     : GameService;
   userName : string;
   gridSize : number;
-   // possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
-  iaPlayer : string;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
     this.userName = this.game.userName;
     this.gridSize = this.game.gridSize;
-    this.iaPlayer = this.game.iaPlayer;
+    this.blackPlayer = this.game.blackPlayer;
+    this.whitePlayer = this.game.whitePlayer;
+    this.animationDelay = this.game.animationDelay;
   }
 
-  changeIaPlayer(iaPlayer : string) : void{
-    this.iaPlayer = iaPlayer;
+  changeIaPlayer(isWhite : boolean, player : string) : void{
+    if (isWhite) this.whitePlayer = player;
+    else         this.blackPlayer = player;
   }
 
-  getIaPlayer() : string{
-    switch (this.iaPlayer) {
+  longerAnimationDelay() : void{
+    if (this.animationDelay < 5000) 
+      this.animationDelay +=200;
+  }
+  shorterAnimationDelay() : void{
+    if (this.animationDelay > 200) 
+      this.animationDelay -=200;
+  }
+
+  getIaPlayer(isWhite : boolean) : string{
+    switch (isWhite ? this.whitePlayer : this.blackPlayer) {
       case "none":
         return "vrai joueur"
       case "random":
@@ -41,15 +56,13 @@ export class OptionsComponent implements OnInit {
   }
 
   biggerGridSize() : void{
-    if (this.gridSize < 8){
+    if (this.gridSize < 8)
       this.gridSize++;
-    }
   }
 
   smallerGridSize() : void{
-    if (this.gridSize > 3){
+    if (this.gridSize > 3)
       this.gridSize--;
-    }
   }
 
   changeUserName(){
@@ -58,7 +71,9 @@ export class OptionsComponent implements OnInit {
 
   makeChanges(){
     this.game.gridSize = this.gridSize;
-    this.game.iaPlayer = this.iaPlayer;
+    this.game.whitePlayer = this.whitePlayer;
+    this.game.blackPlayer = this.blackPlayer;
+    this.game.animationDelay = this.animationDelay;
   }
 
   ngOnInit() {
