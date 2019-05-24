@@ -12,7 +12,7 @@ import { sleep } from 'sleep-ts'
 
 export class BoardGameComponent implements OnInit {
 
-  // possible values are 'none', 'random' and 'minMax'
+  // possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
   iaPlayer : string;
   gridSize : number;
   game: GameService;
@@ -21,7 +21,6 @@ export class BoardGameComponent implements OnInit {
   possibleMoves : Pawn[];
   oldPlace: Pawn;
   whiteTurn : boolean ;
-  victory	: number ;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
@@ -30,7 +29,6 @@ export class BoardGameComponent implements OnInit {
     this.size = Array.from(Array(this.gridSize), (x, index) => index);
     this.possibleMoves = [];
     this.whiteTurn = false;
-    this.victory = 0;
   }
 
   ngOnInit(): void {
@@ -68,9 +66,9 @@ export class BoardGameComponent implements OnInit {
   }
 
   onClickPawn(row: number, col: number) {
-  	if (this.victory != 0) {
-  		return
-  	}
+    if(this.game.victory){
+      return;
+    }
     this.game.pawns.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite && ( (this.iaPlayer === "none") || !this.whiteTurn)){
@@ -98,6 +96,7 @@ export class BoardGameComponent implements OnInit {
   }
 
   move(row: number, col: number){
+    this.game.nbTurn++;
     this.possibleMoves.forEach( (pawn) => {      
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite){
@@ -106,16 +105,14 @@ export class BoardGameComponent implements OnInit {
           this.possibleMoves = [];
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
-          this.victory = this.game.checkVictory()
-          console.log("Victory : " + this.victory);
-
-          if (this.iaPlayer === "random" && this.victory == 0){
+          this.checkEnd();
+          if (this.iaPlayer === "random"){
             this.randomPlay();
           }        
-          else if (this.iaPlayer === "minMax" && this.victory == 0) {
+          else if (this.iaPlayer === "minMax") {
             this.minMaxPlay(1);
           }
-          else if (this.iaPlayer === "minMaxImproved" && this.victory == 0) {
+          else if (this.iaPlayer === "minMaxImproved") {
             this.minMaxPlay(2);
           }
         }
@@ -124,6 +121,9 @@ export class BoardGameComponent implements OnInit {
   }
 
 async randomPlay(){
+  if(this.game.victory){
+      return;
+    }
 		let whitePawns : Pawn[] = [];
 		this.game.pawns.forEach( (p) =>{
 			if (p.isWhite) whitePawns.push(p);
@@ -142,32 +142,41 @@ async randomPlay(){
 		this.oldPlace = null;
 		pawnToPlay.move(moveToPlay);
 		this.whiteTurn = !this.whiteTurn;
-		this.victory = this.game.checkVictory()
-    	console.log("Victory : " + this.victory);  
+		this.checkEnd();  
 }
 
-async minMaxPlay(difficulty){
-    await sleep(10);
-	let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null,difficulty)
-	const indexOfNext = minmaxTree.calcValue(true);
-	console.log(minmaxTree)
+
+  async minMaxPlay(difficulty){
+    if(this.game.victory){
+      return;
+    }
+    await sleep(1);
+    let minmaxTree = new Node(this.game, this.game.pawns,true,true,0,null,difficulty)
+    const indexOfNext = minmaxTree.calcValue(true);
 
 	this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
 	this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
 	const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
 
-	await sleep(1000);
+    await sleep(1000);
 
-	this.possibleMoves = [];
-	this.oldPlace.move(moveToPlay);
-	this.oldPlace = null;
-	this.whiteTurn = !this.whiteTurn;
-	this.victory = this.game.checkVictory()
-	console.log("Victory : " + this.victory);  
-}
+    this.possibleMoves = [];
+    this.oldPlace.move(moveToPlay);
+    this.oldPlace = null;
+    this.whiteTurn = !this.whiteTurn;
+    this.checkEnd();
+  }
 
-getRandomInt(max: number) {
-	return Math.floor(Math.random() * Math.floor(max));
-}
+  getRandomInt(max: number) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
 
+  checkEnd() : number {
+    this.game.victory = this.game.checkVictory();
+    if(this.game.victory){
+      console.log(this.game.nbTurn);
+      this.game.nbTurn = 0;
+    }
+    return this.game.victory;
+  }
 }

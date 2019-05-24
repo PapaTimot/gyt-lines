@@ -4,15 +4,19 @@ import { Pawn } from './pawn';
 @Injectable({
 	providedIn: 'root'
 })
+
 export class GameService {
 
 	constructor() {}
 
-	iaPlayer : string = "minMaxImproved";
+	iaPlayer : string = "random";
 	gridSize : number = 6;
 	userName : string = "Joueur 1";
+	victory  : number = 0;
+	nbTurn   : number = 0;
 
   	pawns : Pawn[] = [];
+
   	THREAT_WEIGHT			:number = 10000;
   	CENTRALISATION_WEIGHT 	:number = 1000;
   	CLUSTER_WEIGHT			:number = 50;
