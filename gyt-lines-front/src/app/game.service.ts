@@ -4,14 +4,16 @@ import { Pawn } from './pawn';
 @Injectable({
 	providedIn: 'root'
 })
+
 export class GameService {
 
 	constructor() {}
 
-	iaPlayer : string = "minMaxImproved";
+	iaPlayer : string = "random";
 	gridSize : number = 6;
 	userName : string = "Joueur 1";
 	victory  : number = 0;
+	nbTurn   : number = 0;
 
   	pawns : Pawn[] = [];
 
