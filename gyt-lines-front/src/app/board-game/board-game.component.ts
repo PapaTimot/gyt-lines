@@ -179,4 +179,21 @@ async randomPlay(){
     }
     return this.game.victory;
   }
+
+  getWinner(): string {
+    let result: string;
+    switch (this.game.checkVictory()) {
+      case 1:
+        result = 'Les blancs gagne !';
+        break;
+      case 2:
+        result = 'Les noirs gagne !';
+        break;
+      case 3:
+        result = 'Egalité !'
+      default:
+        break;
+    }
+    return result;
+  }
 }
