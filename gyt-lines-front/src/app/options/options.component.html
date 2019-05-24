@@ -17,11 +17,24 @@
   <br/>
   <br/>
 
-  <h4> Joueurs blancs : ({{getIaPlayer()}}) </h4>
-  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('none')"> Vrai joueur </button>
-  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('random')"> IA facile </button>
-  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('minMax')"> IA moyenne </button>
-  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer('minMaxImproved')"> IA difficile </button>
+  <h4> Joueurs noirs : {{getIaPlayer(false)}} </h4>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(false, 'none')"> Vrai joueur </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(false, 'random')"> IA facile </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(false, 'minMax')"> IA moyenne </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(false, 'minMaxImproved')"> IA difficile </button>
+
+  <h4> Joueurs blancs : {{getIaPlayer(true)}} </h4>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(true, 'none')"> Vrai joueur </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(true, 'random')"> IA facile </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(true, 'minMax')"> IA moyenne </button>
+  <button class="btn btn-primary semi-btn" (click)="changeIaPlayer(true, 'minMaxImproved')"> IA difficile </button>
+
+  <br/>
+  <br/>
+
+  <h4> Délai d'animation pour l'IA : {{this.animationDelay}} ms </h4>
+  <button class="btn btn-primary semi-btn" (click)="shorterAnimationDelay()"> - </button>
+  <button class="btn btn-primary semi-btn" (click)="longerAnimationDelay()"> + </button>
 
   <br/>
   <br/>

@@ -9,11 +9,14 @@ export class GameService {
 
 	constructor() {}
 
-	iaPlayer : string = "random";
-	gridSize : number = 6;
-	userName : string = "Joueur 1";
-	victory  : number = 0;
-	nbTurn   : number = 0;
+	// possible values are 'none', 'random', 'minMax' and 'minMaxImproved'
+	blackPlayer : string = 'none';
+	whitePlayer : string = 'random';
+	gridSize    : number = 6;
+	userName    : string = "Joueur 1";
+	victory     : number = 0;
+	nbTurn      : number = 0;
+	animationDelay : number = 1000;
 
   	pawns : Pawn[] = [];
 
