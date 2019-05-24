@@ -30,18 +30,18 @@ export class Pawn {
         this.pawns.splice(i, 1);
     }
   
-    possibleMoves() : Pawn[] {
+    possibleMoves(pawns) : Pawn[] {
     let out : Pawn[] = [];
         
         const moveSize = this.getMoveSize();
-        this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, this.pawns, this.gridSize), this.pawns  , out);
-        this.validateMoves(new Pawn(this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite, this.pawns, this.gridSize), this.pawns  , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite, this.pawns, this.gridSize), this.pawns     , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite, this.pawns, this.gridSize), this.pawns     , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns, this.gridSize), this.pawns, out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, this.pawns, this.gridSize), this.pawns, out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite, this.pawns, this.gridSize), this.pawns     , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite, this.pawns, this.gridSize), this.pawns     , out);
+        this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
         
         return out;
     }
@@ -79,29 +79,17 @@ export class Pawn {
 
         let valid: boolean = true;
         for (var i = pawnsToVerify.length - 1; i >= 0; i--) {
-            // if there is an ennemy pawn on the path --> trash
+            // if there is an ennemy pawn on the path --> trash            
             if(pawnsToVerify[i].isWhite !== this.isWhite && pawnsToVerify[i].isBetween(this, move)) valid = false;
             
             // if there is an other of our pawns at this place --> trash
             if(pawnsToVerify[i].isWhite === this.isWhite && pawnsToVerify[i].isSamePlace(move)) valid = false;
-        }
-        // line.forEach(element => {
-        //     console.log(`isWhite : ${element.isWhite} - x : ${element.x} - y : ${element.y}`);
-        // });
-        // console.log("-");
-        
+        }       
         
         // else add it to possibilities
         if(valid) possibilities.push(move);
     }
   
-    /* ATTENTION
-      *  position != move
-      *  this != position
-      *  this peux être égal à move
-      *
-      *  Normalement l'appel de cette fonction ce fait sur les contenuLigne qui garanti les assertions précédentes
-      */
     isBetween(position, move) : boolean {
         const between_dx = this.x - position.x;
         const between_dy = this.y - position.y;
@@ -110,7 +98,8 @@ export class Pawn {
         const mod_between = Math.sqrt(between_dy*between_dy+between_dx*between_dx)
         const mod_move = Math.sqrt(move_dy*move_dy+move_dx*move_dx)
         if(mod_between>= mod_move) return false;
-        if(between_dx/mod_between == move_dx/mod_move && between_dy/mod_between == move_dy/mod_move) return true;
+        // Warning : Math.abs and deltas are used because of the double approximation
+        if(Math.abs(between_dx/mod_between - move_dx/mod_move) < 0.001 && Math.abs(between_dy/mod_between - move_dy/mod_move) < 0.001) return true;
         return false
     }
   

@@ -79,7 +79,7 @@ export class BoardGameComponent implements OnInit {
             this.oldPlace = null;
           } 
           else {
-            this.possibleMoves = pawn.possibleMoves();
+            this.possibleMoves = pawn.possibleMoves(pawn.pawns);
             this.oldPlace = pawn;
           } 
         }
@@ -133,7 +133,7 @@ async randomPlay(){
 
 		let pawnToPlay = whitePawns[this.getRandomInt(whitePawns.length)];
 		this.oldPlace = pawnToPlay;
-		this.possibleMoves = pawnToPlay.possibleMoves();
+		this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
 		let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
 
 		await sleep(1500);
@@ -153,7 +153,7 @@ async minMaxPlay(difficulty){
 	console.log(minmaxTree)
 
 	this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
-	this.possibleMoves = this.oldPlace.possibleMoves();
+	this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
 	const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
 
 	await sleep(1000);

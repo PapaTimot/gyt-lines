@@ -29,7 +29,7 @@ export class Node {
 			var gameCopy = Array.from(this.state);
 			for (var i = gameCopy.length - 1; i >= 0; i--) {
 				if(gameCopy[i].isWhite == player_color){
-					const nextPlaces = gameCopy[i].possibleMoves();
+					const nextPlaces = gameCopy[i].possibleMoves(gameCopy);
 					const pawnToMove = this.state[i];
 					gameCopy.splice(i,1);
 					for (var j = nextPlaces.length - 1; j >= 0; j--) {
