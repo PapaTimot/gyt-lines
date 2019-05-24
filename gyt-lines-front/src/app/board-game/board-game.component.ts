@@ -21,7 +21,6 @@ export class BoardGameComponent implements OnInit {
   possibleMoves : Pawn[];
   oldPlace: Pawn;
   whiteTurn : boolean ;
-  victory	: number ;
 
   constructor(gameService: GameService) { 
     this.game = gameService;
@@ -30,7 +29,6 @@ export class BoardGameComponent implements OnInit {
     this.size = Array.from(Array(this.gridSize), (x, index) => index);
     this.possibleMoves = [];
     this.whiteTurn = false;
-    this.victory = 0;
   }
 
   ngOnInit(): void {
@@ -68,7 +66,7 @@ export class BoardGameComponent implements OnInit {
   }
 
   onClickPawn(row: number, col: number) {
-  	if (this.victory != 0) {
+  	if (this.game.victory != 0) {
   		return
   	}
     this.game.pawns.forEach( (pawn) => {      
@@ -106,16 +104,16 @@ export class BoardGameComponent implements OnInit {
           this.possibleMoves = [];
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
-          this.victory = this.game.checkVictory()
-          console.log("Victory : " + this.victory);
+          this.game.victory = this.game.checkVictory()
+          console.log("Victory : " + this.game.victory);
 
-          if (this.iaPlayer === "random" && this.victory == 0){
+          if (this.iaPlayer === "random" && this.game.victory == 0){
             this.randomPlay();
           }        
-          else if (this.iaPlayer === "minMax" && this.victory == 0) {
+          else if (this.iaPlayer === "minMax" && this.game.victory == 0) {
             this.minMaxPlay(1);
           }
-          else if (this.iaPlayer === "minMaxImproved" && this.victory == 0) {
+          else if (this.iaPlayer === "minMaxImproved" && this.game.victory == 0) {
             this.minMaxPlay(2);
           }
         }
@@ -142,8 +140,8 @@ async randomPlay(){
 		this.oldPlace = null;
 		pawnToPlay.move(moveToPlay);
 		this.whiteTurn = !this.whiteTurn;
-		this.victory = this.game.checkVictory()
-    	console.log("Victory : " + this.victory);  
+		this.game.victory = this.game.checkVictory()
+    	console.log("Victory : " + this.game.victory);  
 }
 
 async minMaxPlay(difficulty){
@@ -162,8 +160,8 @@ async minMaxPlay(difficulty){
 	this.oldPlace.move(moveToPlay);
 	this.oldPlace = null;
 	this.whiteTurn = !this.whiteTurn;
-	this.victory = this.game.checkVictory()
-	console.log("Victory : " + this.victory);  
+	this.game.victory = this.game.checkVictory()
+	console.log("Victory : " + this.game.victory);  
 }
 
 getRandomInt(max: number) {
