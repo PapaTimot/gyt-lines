@@ -9,17 +9,22 @@ export class Node {
 	val         	: number;
 	lastPawnMoved  	: Pawn;
 	game 			: GameService;
+	difficulty		: number;
 
-	constructor(gameService: GameService, state, player_color, my_color, depth, moved){
+	constructor(gameService: GameService, state, player_color, my_color, depth, moved, difficulty){
 		this.game           = gameService;
 		this.state 			= state;
 		this.nextStates 	= [];
 		this.val 			= 0;
 		this.lastPawnMoved 	= moved;
+		this.difficulty		= difficulty;
 
-
-		if(depth>this.MINMAX_DEPTH){
-			this.val = this.game.reward(this.state,my_color);
+		if(this.game.getClusters(state, my_color).length == 1){
+			this.val = 10000000000
+		} else if (this.game.getClusters(state, !my_color).length == 1) {
+			this.val = -10000000000
+		} else if(depth>this.MINMAX_DEPTH){
+			this.val = this.game.reward(this.state,my_color,this.difficulty);
 		} else {
 			var gameCopy = Array.from(this.state);
 			for (var i = gameCopy.length - 1; i >= 0; i--) {
@@ -30,13 +35,13 @@ export class Node {
 					for (var j = nextPlaces.length - 1; j >= 0; j--) {
 						const nextBoard = Array.from(gameCopy);
 						nextBoard.push(nextPlaces[j]);
-						this.nextStates.push(new Node(this.game, nextBoard, !player_color, my_color, depth+1, pawnToMove));
+						this.nextStates.push(new Node(this.game, nextBoard, !player_color, my_color, depth+1, pawnToMove, difficulty));
 					}
 					gameCopy = Array.from(this.state);
 				}
 			}
 			if (this.nextStates == []) {
-				this.val = this.game.reward(this.state,my_color);
+				this.val = this.game.reward(this.state,my_color, this.difficulty);
 			}
 		}
 	}
