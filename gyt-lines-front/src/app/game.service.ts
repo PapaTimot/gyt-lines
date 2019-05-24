@@ -11,8 +11,10 @@ export class GameService {
 	iaPlayer : string = "minMaxImproved";
 	gridSize : number = 6;
 	userName : string = "Joueur 1";
+	victory  : number = 0;
 
   	pawns : Pawn[] = [];
+
   	THREAT_WEIGHT			:number = 10000;
   	CENTRALISATION_WEIGHT 	:number = 1000;
   	CLUSTER_WEIGHT			:number = 50;
