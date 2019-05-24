@@ -20,6 +20,8 @@ export class Pawn {
     }
   
     move(newPlace) : void {
+        console.log(this.pawns);
+        
         for (var i = this.pawns.length - 1; i >= 0; i--) {
             if(this.pawns[i].isSamePlace(newPlace)){
                 this.pawns.splice(i, 1);
@@ -28,6 +30,7 @@ export class Pawn {
         this.pawns.push(newPlace);
         i = this.pawns.indexOf(this);
         this.pawns.splice(i, 1);
+        console.log(this.pawns);
     }
   
     possibleMoves(pawns) : Pawn[] {

@@ -117,7 +117,6 @@ export class BoardGameComponent implements OnInit {
       if(pawn.x === col && pawn.y === row) {
         if (this.whiteTurn === pawn.isWhite){
           this.oldPlace.move(pawn);
-          this.game.getThreats(this.game.pawns, false)
           this.possibleMoves = [];
           this.oldPlace = null;
           this.whiteTurn = !this.whiteTurn;
@@ -128,50 +127,54 @@ export class BoardGameComponent implements OnInit {
     });
   }
 
-async randomPlay(){
-  if(this.game.victory){
-      return;
-    }
-      let pawns : Pawn[] = [];
-      this.game.pawns.forEach( (p) =>{
-        if (p.isWhite === this.whiteTurn) pawns.push(p);
-      })
-
-      let pawnToPlay = pawns[this.getRandomInt(pawns.length)];
-      this.oldPlace = pawnToPlay;
-      this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
-      let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
-
-      await sleep(this.game.animationDelay);
-
-      this.possibleMoves = [];
-      this.oldPlace = null;
-      pawnToPlay.move(moveToPlay);
-      this.whiteTurn = !this.whiteTurn;
-      this.checkEnd();
-      this.callIA();
-  }
-
-  async minMaxPlay(difficulty){
+  async randomPlay(){
+    this.game.nbTurn++;
     if(this.game.victory){
-      return;
+        return;
     }
-    await sleep(1);
-    let minmaxTree = new Node(this.game, this.game.pawns,this.whiteTurn,this.whiteTurn,0,null,difficulty)
-    const indexOfNext = minmaxTree.calcValue(true);
+    let pawns : Pawn[] = [];
+    this.game.pawns.forEach( (p) =>{
+      if (p.isWhite === this.whiteTurn) pawns.push(p);
+    })
 
-	this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
-	this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
-	const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
+    let pawnToPlay = pawns[this.getRandomInt(pawns.length)];
+    this.oldPlace = pawnToPlay;
+    this.possibleMoves = pawnToPlay.possibleMoves(pawnToPlay.pawns);
+    let moveToPlay = this.possibleMoves[this.getRandomInt(this.possibleMoves.length)];
 
     await sleep(this.game.animationDelay);
 
     this.possibleMoves = [];
+    this.oldPlace = null;
+    pawnToPlay.move(moveToPlay);
+    this.whiteTurn = !this.whiteTurn;
+    this.checkEnd();
+    await this.callIA();
+  }
+
+  async minMaxPlay(difficulty){
+    this.game.nbTurn++;
+    if(this.game.victory){
+      return;
+    }
+    await sleep(200);
+    let minmaxTree = new Node(this.game, this.game.pawns,this.whiteTurn,this.whiteTurn,0,null,difficulty)
+    const indexOfNext = minmaxTree.calcValue(true);
+
+	  this.oldPlace = minmaxTree.nextStates[indexOfNext].lastPawnMoved
+	  this.possibleMoves = this.oldPlace.possibleMoves(this.oldPlace.pawns);
+	  const moveToPlay = minmaxTree.nextStates[indexOfNext].state.filter(p => !this.game.pawns.includes(p))[0]
+
+    await sleep(this.game.animationDelay);
+
+    this.possibleMoves = [];
+    
     this.oldPlace.move(moveToPlay);
+
     this.oldPlace = null;
     this.whiteTurn = !this.whiteTurn;
     this.checkEnd();
-    this.callIA();
+    await this.callIA();
   }
 
   getRandomInt(max: number) {
@@ -187,21 +190,22 @@ async randomPlay(){
     let result: string;
     switch (this.game.checkVictory()) {
       case 1:
-        result = 'Les blancs gagne !';
+        result = 'Les blancs ont gagné (en ';
         break;
       case 2:
-        result = 'Les noirs gagne !';
+        result = 'Les noirs ont gagné (en ';
         break;
       case 3:
-        result = 'Egalité !'
+        result = 'Egalité (en '
       default:
         break;
     }
-    return result;
+    return result + this.game.nbTurn + " tours)";
   }
 
   endGame() : void {
     this.game.victory = 0;
     this.game.nbTurn = 0;
+    console.log("ok");
   }
 }

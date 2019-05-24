@@ -12,8 +12,7 @@ const routes: Routes = [
   { path: 'game'        , component : BoardGameComponent    },
   { path: 'options'     , component : OptionsComponent      },
   { path: 'instructions', component : InstructionsComponent },
-  { path: 'credits'     , component : CreditsComponent      },
-  { path: 'victory'     , component : MenuComponent      }
+  { path: 'credits'     , component : CreditsComponent      }
 ];
 
 @NgModule({
