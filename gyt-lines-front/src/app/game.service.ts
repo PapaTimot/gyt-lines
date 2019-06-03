@@ -28,10 +28,10 @@ export class GameService {
   initGame() : void {
 		this.pawns = [];
     for (let i = 1; i < this.gridSize-1; i++) {
-      this.pawns.push( new Pawn(i,0,true ,this.pawns, this.gridSize) );
-      this.pawns.push( new Pawn(i,this.gridSize-1,true ,this.pawns, this.gridSize) );
-      this.pawns.push( new Pawn(0,i,false,this.pawns, this.gridSize) );
-      this.pawns.push( new Pawn(this.gridSize-1,i,false,this.pawns, this.gridSize) );
+      this.pawns.push( new Pawn(this, i, 0, true) );
+      this.pawns.push( new Pawn(this, i, this.gridSize-1, true) );
+      this.pawns.push( new Pawn(this, 0, i, false) );
+      this.pawns.push( new Pawn(this, this.gridSize-1, i, false) );
     }
   }
 
@@ -74,7 +74,7 @@ export class GameService {
 		var gameCopy: Pawn[] = Array.from(pawns);
 		for (var i = gameCopy.length - 1; i >= 0; i--) {
 			if(gameCopy[i].isWhite == isWhite){
-				const nextPlaces = gameCopy[i].possibleMoves(gameCopy);
+				const nextPlaces = gameCopy[i].possibleMoves();
 				const pawnToMove = pawns[i];
 				gameCopy.splice(i,1);
 				for (var j = nextPlaces.length - 1; j >= 0; j--) {
@@ -102,7 +102,7 @@ export class GameService {
 					ys+=p.y;
 				}
 			});
-			return new Pawn(Math.round(xs/nb),Math.round(ys/nb),isWhite,pawns, this.gridSize)
+			return new Pawn(this, Math.round(xs/nb),Math.round(ys/nb),isWhite)
 		}
 
 		reward(pawns,mycolor,difficulte) : number{

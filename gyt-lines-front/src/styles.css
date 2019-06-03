@@ -19,7 +19,7 @@ body, input[type="text"]{
     font-family: Cambria, Georgia;
 }
 
-html, .root, .card-body{
+html, .root{
     background: #DDDDDD;
 }
 

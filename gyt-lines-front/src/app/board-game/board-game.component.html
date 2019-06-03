@@ -15,5 +15,7 @@
   <br/>
   <br/>
 
+  <button class="btn btn-primary semi-btn" (click)="callIA()" *ngIf="start"> Démarrer </button>
   <button class="btn btn-success semi-btn" (click)="endGame()" routerLink="/menu"> Menu </button>
+  <img src="assets/img/loading.gif" *ngIf="waiting">
 </div>

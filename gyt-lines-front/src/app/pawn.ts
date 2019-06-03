@@ -1,3 +1,5 @@
+import { GameService } from './game.service';
+
 export class Pawn {
 
     VERTICAL   : number	= 0; //	|
@@ -8,50 +10,47 @@ export class Pawn {
     x       : number ;
     y       : number ;
     isWhite : boolean;
-    pawns   : Pawn[] ;
-    gridSize    : number;
 
-    constructor(x, y, isWhite, pawns, gridSize){
+    game: GameService;
+
+    constructor(gameService: GameService, x, y, isWhite){
         this.x              = x;
         this.y              = y;
         this.isWhite        = isWhite;
-        this.pawns          = pawns  ;
-        this.gridSize       = gridSize;
+        this.game = gameService;
     }
   
-    move(newPlace) : void {
-        console.log(this.pawns);
-        
-        for (var i = this.pawns.length - 1; i >= 0; i--) {
-            if(this.pawns[i].isSamePlace(newPlace)){
-                this.pawns.splice(i, 1);
+    move(newPlace) : Pawn[] {
+        for (var i = this.game.pawns.length - 1; i >= 0; i--) {
+            if(this.game.pawns[i].isSamePlace(newPlace)){
+                this.game.pawns.splice(i, 1);
             }
         }
-        this.pawns.push(newPlace);
-        i = this.pawns.indexOf(this);
-        this.pawns.splice(i, 1);
-        console.log(this.pawns);
+        this.game.pawns.push(newPlace);
+        i = this.game.pawns.indexOf(this);
+        this.game.pawns.splice(i, 1);
+        return this.game.pawns;
     }
   
-    possibleMoves(pawns) : Pawn[] {
+    possibleMoves() : Pawn[] {
     let out : Pawn[] = [];
         
         const moveSize = this.getMoveSize();
-        this.validateMoves(new Pawn(this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
-        this.validateMoves(new Pawn(this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite, pawns, this.gridSize), pawns , out);
+        this.validateMoves(new Pawn(this.game, this.x                          ,this.y+moveSize[this.VERTICAL],this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x                          ,this.y-moveSize[this.VERTICAL],this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x+moveSize[this.BARRE]     ,this.y+moveSize[this.BARRE]   ,this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x-moveSize[this.BARRE]     ,this.y-moveSize[this.BARRE]   ,this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x+moveSize[this.HORIZONTAL],this.y                        ,this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x-moveSize[this.HORIZONTAL],this.y                        ,this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x+moveSize[this.BANDE]     ,this.y-moveSize[this.BANDE]   ,this.isWhite), out);
+        this.validateMoves(new Pawn(this.game, this.x-moveSize[this.BANDE]     ,this.y+moveSize[this.BANDE]   ,this.isWhite), out);
         
         return out;
     }
   
     getMoveSize() : number[] {
         let out = [1,1,1,1];
-        this.pawns.forEach( (p) => {
+        this.game.pawns.forEach( (p) => {
             if(this == p) {
                 return;
             }
@@ -76,17 +75,17 @@ export class Pawn {
         return out;
     }
   
-    validateMoves(move, pawnsToVerify, possibilities) : void {
+    validateMoves(move, possibilities) : void {
         // if out of the board --> trash
-        if(move.x >= this.gridSize || move.y >= this.gridSize || move.x < 0 || move.y < 0) return
+        if(move.x >= this.game.gridSize || move.y >= this.game.gridSize || move.x < 0 || move.y < 0) return
 
         let valid: boolean = true;
-        for (var i = pawnsToVerify.length - 1; i >= 0; i--) {
+        for (var i = this.game.pawns.length - 1; i >= 0; i--) {
             // if there is an ennemy pawn on the path --> trash            
-            if(pawnsToVerify[i].isWhite !== this.isWhite && pawnsToVerify[i].isBetween(this, move)) valid = false;
+            if(this.game.pawns[i].isWhite !== this.isWhite && this.game.pawns[i].isBetween(this, move)) valid = false;
             
             // if there is an other of our pawns at this place --> trash
-            if(pawnsToVerify[i].isWhite === this.isWhite && pawnsToVerify[i].isSamePlace(move)) valid = false;
+            if(this.game.pawns[i].isWhite === this.isWhite && this.game.pawns[i].isSamePlace(move)) valid = false;
         }       
         
         // else add it to possibilities

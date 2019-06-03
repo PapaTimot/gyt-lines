@@ -36,3 +36,8 @@ table {
     color: rgba(99, 70, 31, 0.466);
     font-size: 3vw;
 }
+
+img {
+    width: 100px;
+    height: auto;
+}
